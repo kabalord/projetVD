@@ -1,0 +1,234 @@
+---
+title: "TITRE"
+#author: "LIEPO Brice - KEvin"
+#date: "20/03/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyverse)
+library(lattice)
+library(car)
+library(viridis)
+library(GGally)
+
+setwd("C:/Users/HP/Desktop/Visualisation/ProjetVD/Presentation_MarkDown")
+data.Football <- read.csv2("data_football.csv", sep = ",")
+data.Football$Nom <- as.character(str_to_upper(data.Football$Nom))
+```
+## I) Introduction
+Blablabla
+
+## II) Présentation des données
+1)....
+Les donnees utilisees pour notre analyse, concernent le domaine du football.
+```{r}
+head(x = data.Football[,1:4])
+```
+
+Elles contiennent 300 observations (footballeurs) et 45 variables, toutes decrivant les caracteristiques propres a chacun des footballeurs.
+Ces differentes caracteristiques proviennent d'analyses de differents specialistes du domaine du football. 
+```{r}
+str(data.Football)
+summary(data.Football)
+```
+
+Nos donnees sont donc composees de 4 variables de types "factor", dont le plus important : Position, qui represente la position preferencielle du joueur sur le terrain. Les differentes positions sont les suivantes :
+```{r}
+filter(data.Football[,1:4],Position == "GARDIEN")
+filter(data.Football[,1:4],Position == c("DEFENSEUR GAUCHE","DEFENSEUR DROIT","DEFENSEUR CENTRE"))
+filter(data.Football[,1:4],Position == c("MILIEUX OFFENSIF","MILIEUX GAUCHE","MILIEUX DROIT","MILIEUX CENTRAL","MILIEUX DEFENSIF"))
+filter(data.Football[,1:4],Position == c("ATTAQUANT","AILIER"))
+```
+
+2)....
+```{r}
+GARDIEN <- filter(data.Football,Position == "GARDIEN")
+ggplot(GARDIEN) +
+  aes(x = Evaluation, fill = Position) +
+  geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(.5)) +
+  xlab("Evaluation") +
+  ylab("Effectifs") +
+  labs(fill = "Position") +
+  scale_x_continuous("Evaluation",limits = c(80,95)) +
+  scale_y_continuous("Effectif",limits = c(0,30))
+```
+
+```{r}
+DEFENSEUR.GAUCHE <- filter(data.Football,Position == "DEFENSEUR GAUCHE")
+ggplot(DEFENSEUR.GAUCHE) +
+  aes(x = Evaluation, fill = Position) +
+  geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(.5)) +
+  xlab("Evaluation") +
+  ylab("Effectifs") +
+  labs(fill = "Position") +
+  scale_x_continuous("Evaluation",limits = c(80,95)) +
+  scale_y_continuous("Effectif",limits = c(0,30))
+```
+
+```{r}
+DEFENSEUR.DROIT <- filter(data.Football,Position == "DEFENSEUR DROIT")
+ggplot(DEFENSEUR.DROIT) +
+  aes(x = Evaluation, fill = Position) +
+  geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(.5)) +
+  xlab("Evaluation") +
+  ylab("Effectifs") +
+  labs(fill = "Position") +
+  scale_x_continuous("Evaluation",limits = c(80,95)) +
+  scale_y_continuous("Effectif",limits = c(0,30))
+```
+
+```{r}
+DEFENSEUR.CENTRE <- filter(data.Football,Position == "DEFENSEUR CENTRE")
+ggplot(DEFENSEUR.CENTRE) +
+  aes(x = Evaluation, fill = Position) +
+  geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(.5)) +
+  xlab("Evaluation") +
+  ylab("Effectifs") +
+  labs(fill = "Position") +
+  scale_x_continuous("Evaluation",limits = c(80,95)) +
+  scale_y_continuous("Effectif",limits = c(0,30))
+```
+
+```{r}
+MILIEUX.DEFENSIF <- filter(data.Football,Position == "MILIEUX DEFENSIF")
+ggplot(MILIEUX.DEFENSIF) +
+  aes(x = Evaluation, fill = Position) +
+  geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(.5)) +
+  xlab("Evaluation") +
+  ylab("Effectifs") +
+  labs(fill = "Position") +
+  scale_x_continuous("Evaluation",limits = c(80,95)) +
+  scale_y_continuous("Effectif",limits = c(0,30))
+```
+
+```{r}
+MILIEUX.CENTRAL <- filter(data.Football,Position == "MILIEUX CENTRAL")
+ggplot(MILIEUX.CENTRAL) +
+  aes(x = Evaluation, fill = Position) +
+  geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(.5)) +
+  xlab("Evaluation") +
+  ylab("Effectifs") +
+  labs(fill = "Position") +
+  scale_x_continuous("Evaluation",limits = c(80,95)) +
+  scale_y_continuous("Effectif",limits = c(0,30))
+```
+
+```{r}
+MILIEUX.GAUCHE <- filter(data.Football,Position == "MILIEUX GAUCHE")
+ggplot(MILIEUX.GAUCHE) +
+  aes(x = Evaluation, fill = Position) +
+  geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(.5)) +
+  xlab("Evaluation") +
+  ylab("Effectifs") +
+  labs(fill = "Position") +
+  scale_x_continuous("Evaluation",limits = c(80,95)) +
+  scale_y_continuous("Effectif",limits = c(0,30))
+```
+
+```{r}
+MILIEUX.DROIT <- filter(data.Football,Position == "MILIEUX DROIT")
+ggplot(MILIEUX.DROIT) +
+  aes(x = Evaluation, fill = Position) +
+  geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(.5)) +
+  xlab("Evaluation") +
+  ylab("Effectifs") +
+  labs(fill = "Position") +
+  scale_x_continuous("Evaluation",limits = c(80,95)) +
+  scale_y_continuous("Effectif",limits = c(0,30))
+```
+
+```{r}
+MILIEUX.OFFENSIF <- filter(data.Football,Position == "MILIEUX OFFENSIF")
+ggplot(MILIEUX.OFFENSIF) +
+  aes(x = Evaluation, fill = Position) +
+  geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(.5)) +
+  xlab("Evaluation") +
+  ylab("Effectifs") +
+  labs(fill = "Position") +
+  scale_x_continuous("Evaluation",limits = c(80,95)) +
+  scale_y_continuous("Effectif",limits = c(0,30))
+```
+
+```{r}
+ATTAQUANT <- filter(data.Football,Position == "ATTAQUANT")
+ggplot(ATTAQUANT) +
+  aes(x = Evaluation, fill = Position) +
+  geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(.5)) +
+  xlab("Evaluation") +
+  ylab("Effectifs") +
+  labs(fill = "Position") +
+  scale_x_continuous("Evaluation",limits = c(80,95)) +
+  scale_y_continuous("Effectif",limits = c(0,30))
+```
+
+```{r}
+AILIER <- filter(data.Football,Position == "AILIER")
+ggplot(AILIER) +
+  aes(x = Evaluation, fill = Position) +
+  geom_bar() +
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(.5)) +
+  xlab("Evaluation") +
+  ylab("Effectifs") +
+  labs(fill = "Position") +
+  scale_x_continuous("Evaluation",limits = c(80,95)) +
+  scale_y_continuous("Effectif",limits = c(0,30))
+```
+
+
+## III) ....
+```{r}
+scatterplotMatrix(formula = ~ Positionnement_GK+Plongee_GK+Coup_de_pied_GK+Jeu_de_Main_GK+Reflexes_GK, data=data.Football, cex=0.6)
+```
+
+```{r}
+scatterplotMatrix(formula = ~ Marquage+Tacle_Glisse+Tacle_Debout+Agressivite+Force, data=data.Football, cex=0.6)
+```
+
+```{r}
+scatterplotMatrix(formula = ~ Vision_du_Jeu+Passe_Courte+Passe_Longue+Endurance+Equilibre+Controle_de_balle, data=data.Football, cex=0.6)
+```
+
+```{r}
+scatterplotMatrix(formula = ~ Attaque+Agilite+Vitesse+Finition+Tete+Acceleration+Vitesse+Penalty, data=data.Football, cex=0.6)
+```
+
+```{r}
+scatterplotMatrix(formula = ~ Evaluation+Finition+Attaque, data=data.Football, cex=0.6)
+```
+
+```{r}
+ggplot(data.Football) +
+  geom_point(aes(x = Finition, y = Attaque), 
+             color = "red", size = 1) +
+  geom_rug() + 
+  scale_x_continuous("Note en finition",limits = c(0,100)) +
+  scale_y_continuous("Note en attaque",limits = c(0,100))
+```
+
+```{r}
+ggplot(data.Football) + geom_histogram(aes(x = Evaluation), fill = "lightgreen", color = "black")+
+  scale_y_continuous("Effectif",limits = c(0,100))
+histogram(~Evaluation,data=data.Football,col="lightgreen")
+histogram(~Age,data=data.Football,col="lightgreen",breaks=20)
+```
+
+```{r}
+ggplot(data.Football) + 
+  geom_boxplot(aes(x = Position, y = Evaluation), fill = "lightblue", color = "black", varwidth = TRUE, width =0.8)
+```
+
+```{r}
+```
