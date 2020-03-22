@@ -230,3 +230,21 @@ ggcorr(data.Football)
 #filter(data.Football[,1:4],Position == c("DEFENSEUR GAUCHE","DEFENSEUR DROIT","DEFENSEUR CENTRE"))
 #filter(data.Football[,1:4],Position == c("MILIEUX OFFENSIF","MILIEUX GAUCHE","MILIEUX DROIT","MILIEUX CENTRAL","MILIEUX DEFENSIF"))
 #filter(data.Football[,1:4],Position == "ATTAQUANT")
+
+#x <- ggplot(data.Football) +
+#  aes(x = Passe_Longue, fill = Position) +
+#  geom_bar() +
+#  geom_text(aes(label = ..count..), stat = "count", position = position_stack(.5)) +
+#  xlab("Passe_Longue") +
+#  ylab("Effectifs") +
+#  labs(fill = "Position")
+
+#ggsave("mon_graphique.pdf", plot = x,
+#       width = 11, height = 8)
+
+#ggplot(data.Football, aes("", fill = factor(Pied_Fort))) + 
+#  geom_bar(aes(y = (..count..)/sum(..count..)), width = 1) +
+#  scale_y_continuous() +
+#  ylab("") + xlab("") + labs(fill = "Pied_Fort") +
+#  theme(axis.ticks = element_blank()) + 
+#  coord_polar(theta = "y")

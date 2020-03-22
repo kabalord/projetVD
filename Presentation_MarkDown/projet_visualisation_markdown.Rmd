@@ -21,30 +21,59 @@ data.Football$Nom <- as.character(str_to_upper(data.Football$Nom))
 ## I) Introduction
 Blablabla
 
-## II) Présentation des données
+## II) Presentation des donnees
 1)....
+
 Les donnees utilisees pour notre analyse, concernent le domaine du football.
-```{r}
+```{r warning=FALSE}
 head(x = data.Football[,1:4])
 ```
 
 Elles contiennent 300 observations (footballeurs) et 45 variables, toutes decrivant les caracteristiques propres a chacun des footballeurs.
 Ces differentes caracteristiques proviennent d'analyses de differents specialistes du domaine du football. 
-```{r}
+```{r warning=FALSE}
 str(data.Football)
 summary(data.Football)
 ```
 
 Nos donnees sont donc composees de 4 variables de types "factor", dont le plus important : Position, qui represente la position preferencielle du joueur sur le terrain. Les differentes positions sont les suivantes :
-```{r}
+```{r warning=FALSE}
 filter(data.Football[,1:4],Position == "GARDIEN")
 filter(data.Football[,1:4],Position == c("DEFENSEUR GAUCHE","DEFENSEUR DROIT","DEFENSEUR CENTRE"))
 filter(data.Football[,1:4],Position == c("MILIEUX OFFENSIF","MILIEUX GAUCHE","MILIEUX DROIT","MILIEUX CENTRAL","MILIEUX DEFENSIF"))
 filter(data.Football[,1:4],Position == c("ATTAQUANT","AILIER"))
+
+ggplot(data.Football) + geom_bar(aes(x = Position)) + 
+  scale_x_discrete("Position", limits = c("GARDIEN","DEFENSEUR GAUCHE","DEFENSEUR DROIT","DEFENSEUR CENTRE")) +
+  xlab("Position") +
+  ylab("Effectif")
+
+ggplot(data.Football) + geom_bar(aes(x = Position)) + 
+  scale_x_discrete("Position", limits = c("MILIEUX DEFENSIF","MILIEUX GAUCHE","MILIEUX DROIT","MILIEUX CENTRAL","MILIEUX OFFENSIF")) +
+  xlab("Position") +
+  ylab("Effectif")
+
+ggplot(data.Football) + geom_bar(aes(x = Position)) + 
+  scale_x_discrete("Position", limits = c("ATTAQUANT","AILIER")) +
+  xlab("Position") +
+  ylab("Effectif")
+```
+```{r}
+ggplot(data = data.Football) + 
+  geom_histogram(aes(x = Evaluation)) + 
+  facet_wrap(~Position)
 ```
 
-2)....
-```{r}
+2) Repartition des donnees
+
+```{r warning=FALSE}
+ggplot(data.Football) + geom_histogram(aes(x = Evaluation), fill = "lightgreen", color = "black")+
+  scale_y_continuous("Effectif",limits = c(0,100))
+histogram(~Evaluation,data=data.Football,col="lightgreen",breaks=20)
+histogram(~Age,data=data.Football,col="lightgreen",breaks=50)
+```
+
+```{r warning=FALSE}
 GARDIEN <- filter(data.Football,Position == "GARDIEN")
 ggplot(GARDIEN) +
   aes(x = Evaluation, fill = Position) +
@@ -55,9 +84,11 @@ ggplot(GARDIEN) +
   labs(fill = "Position") +
   scale_x_continuous("Evaluation",limits = c(80,95)) +
   scale_y_continuous("Effectif",limits = c(0,30))
+
+scatterplotMatrix(formula = ~ Positionnement_GK+Plongee_GK+Coup_de_pied_GK+Jeu_de_Main_GK+Reflexes_GK, data=data.Football, cex=0.6)
 ```
 
-```{r}
+```{r warning=FALSE}
 DEFENSEUR.GAUCHE <- filter(data.Football,Position == "DEFENSEUR GAUCHE")
 ggplot(DEFENSEUR.GAUCHE) +
   aes(x = Evaluation, fill = Position) +
@@ -70,7 +101,7 @@ ggplot(DEFENSEUR.GAUCHE) +
   scale_y_continuous("Effectif",limits = c(0,30))
 ```
 
-```{r}
+```{r warning=FALSE}
 DEFENSEUR.DROIT <- filter(data.Football,Position == "DEFENSEUR DROIT")
 ggplot(DEFENSEUR.DROIT) +
   aes(x = Evaluation, fill = Position) +
@@ -83,7 +114,7 @@ ggplot(DEFENSEUR.DROIT) +
   scale_y_continuous("Effectif",limits = c(0,30))
 ```
 
-```{r}
+```{r warning=FALSE}
 DEFENSEUR.CENTRE <- filter(data.Football,Position == "DEFENSEUR CENTRE")
 ggplot(DEFENSEUR.CENTRE) +
   aes(x = Evaluation, fill = Position) +
@@ -94,9 +125,11 @@ ggplot(DEFENSEUR.CENTRE) +
   labs(fill = "Position") +
   scale_x_continuous("Evaluation",limits = c(80,95)) +
   scale_y_continuous("Effectif",limits = c(0,30))
+
+scatterplotMatrix(formula = ~ Marquage+Tacle_Glisse+Tacle_Debout+Agressivite+Force, data=data.Football, cex=0.6)
 ```
 
-```{r}
+```{r warning=FALSE}
 MILIEUX.DEFENSIF <- filter(data.Football,Position == "MILIEUX DEFENSIF")
 ggplot(MILIEUX.DEFENSIF) +
   aes(x = Evaluation, fill = Position) +
@@ -109,7 +142,7 @@ ggplot(MILIEUX.DEFENSIF) +
   scale_y_continuous("Effectif",limits = c(0,30))
 ```
 
-```{r}
+```{r warning=FALSE}
 MILIEUX.CENTRAL <- filter(data.Football,Position == "MILIEUX CENTRAL")
 ggplot(MILIEUX.CENTRAL) +
   aes(x = Evaluation, fill = Position) +
@@ -122,7 +155,7 @@ ggplot(MILIEUX.CENTRAL) +
   scale_y_continuous("Effectif",limits = c(0,30))
 ```
 
-```{r}
+```{r warning=FALSE}
 MILIEUX.GAUCHE <- filter(data.Football,Position == "MILIEUX GAUCHE")
 ggplot(MILIEUX.GAUCHE) +
   aes(x = Evaluation, fill = Position) +
@@ -135,7 +168,7 @@ ggplot(MILIEUX.GAUCHE) +
   scale_y_continuous("Effectif",limits = c(0,30))
 ```
 
-```{r}
+```{r warning=FALSE}
 MILIEUX.DROIT <- filter(data.Football,Position == "MILIEUX DROIT")
 ggplot(MILIEUX.DROIT) +
   aes(x = Evaluation, fill = Position) +
@@ -148,7 +181,7 @@ ggplot(MILIEUX.DROIT) +
   scale_y_continuous("Effectif",limits = c(0,30))
 ```
 
-```{r}
+```{r warning=FALSE}
 MILIEUX.OFFENSIF <- filter(data.Football,Position == "MILIEUX OFFENSIF")
 ggplot(MILIEUX.OFFENSIF) +
   aes(x = Evaluation, fill = Position) +
@@ -159,9 +192,11 @@ ggplot(MILIEUX.OFFENSIF) +
   labs(fill = "Position") +
   scale_x_continuous("Evaluation",limits = c(80,95)) +
   scale_y_continuous("Effectif",limits = c(0,30))
+
+scatterplotMatrix(formula = ~ Vision_du_Jeu+Passe_Courte+Passe_Longue+Endurance+Equilibre+Controle_de_balle, data=data.Football, cex=0.6)
 ```
 
-```{r}
+```{r warning=FALSE}
 ATTAQUANT <- filter(data.Football,Position == "ATTAQUANT")
 ggplot(ATTAQUANT) +
   aes(x = Evaluation, fill = Position) +
@@ -174,7 +209,7 @@ ggplot(ATTAQUANT) +
   scale_y_continuous("Effectif",limits = c(0,30))
 ```
 
-```{r}
+```{r warning=FALSE}
 AILIER <- filter(data.Football,Position == "AILIER")
 ggplot(AILIER) +
   aes(x = Evaluation, fill = Position) +
@@ -185,50 +220,48 @@ ggplot(AILIER) +
   labs(fill = "Position") +
   scale_x_continuous("Evaluation",limits = c(80,95)) +
   scale_y_continuous("Effectif",limits = c(0,30))
-```
 
-
-## III) ....
-```{r}
-scatterplotMatrix(formula = ~ Positionnement_GK+Plongee_GK+Coup_de_pied_GK+Jeu_de_Main_GK+Reflexes_GK, data=data.Football, cex=0.6)
-```
-
-```{r}
-scatterplotMatrix(formula = ~ Marquage+Tacle_Glisse+Tacle_Debout+Agressivite+Force, data=data.Football, cex=0.6)
-```
-
-```{r}
-scatterplotMatrix(formula = ~ Vision_du_Jeu+Passe_Courte+Passe_Longue+Endurance+Equilibre+Controle_de_balle, data=data.Football, cex=0.6)
-```
-
-```{r}
 scatterplotMatrix(formula = ~ Attaque+Agilite+Vitesse+Finition+Tete+Acceleration+Vitesse+Penalty, data=data.Football, cex=0.6)
 ```
 
-```{r}
-scatterplotMatrix(formula = ~ Evaluation+Finition+Attaque, data=data.Football, cex=0.6)
+```{r warning=FALSE}
+ggplot(data.Football) + 
+  geom_boxplot(aes(x = Pied_Fort, y = Evaluation), fill = "lightblue", color = "black", varwidth = TRUE, width =0.8)
 ```
 
-```{r}
+```{r warning=FALSE}
 ggplot(data.Football) +
   geom_point(aes(x = Finition, y = Attaque), 
              color = "red", size = 1) +
-  geom_rug() + 
   scale_x_continuous("Note en finition",limits = c(0,100)) +
   scale_y_continuous("Note en attaque",limits = c(0,100))
 ```
 
-```{r}
-ggplot(data.Football) + geom_histogram(aes(x = Evaluation), fill = "lightgreen", color = "black")+
-  scale_y_continuous("Effectif",limits = c(0,100))
-histogram(~Evaluation,data=data.Football,col="lightgreen")
-histogram(~Age,data=data.Football,col="lightgreen",breaks=20)
+```{r warning=FALSE}
+#A decider
+ggplot(data = data.Football, aes(x = Passe_Longue, y = Passe_Courte)) + 
+  geom_point(alpha = 0.2) + 
+  geom_text(data = filter(data.Football,Position == "MILIEUX CENTRAL"), aes(label = Nom), color = "red", size = 3)
+
+ggplot(data.Football, aes(x = Passe_Courte)) + 
+  geom_histogram(aes(y = ..density..), binwidth = 2) +
+  geom_density()
+
+ggplot(data.Football, aes(Passe_Courte, Passe_Longue)) + geom_point() +
+  geom_rug() +
+  geom_smooth(method = "lm")
+
+ggplot(data.Football, aes(Passe_Courte, col = factor(Pied_Fort))) +
+  geom_density()
+
+#Ensemble
+ggplot(data.Football, aes(factor(Pied_Fort), Passe_Courte, fill = factor(Pied_Fort))) +
+  geom_boxplot()
+ggplot(data.Football, aes(factor(Pied_Fort), Passe_Courte)) + 
+  geom_jitter()
+ggplot(data.Football, aes(factor(Pied_Fort), Passe_Courte)) + 
+  geom_boxplot() +
+  geom_jitter()
 ```
 
-```{r}
-ggplot(data.Football) + 
-  geom_boxplot(aes(x = Position, y = Evaluation), fill = "lightblue", color = "black", varwidth = TRUE, width =0.8)
-```
-
-```{r}
-```
+## III) ....
