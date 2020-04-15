@@ -11,46 +11,23 @@ library(shiny)
 library(shinydashboard)
 data(iris)
 
-dashboardPage(
-    dashboardHeader(title = "Basic dashboard"),
-    dashboardSidebar(),
-    dashboardBody(
-        # Boxes need to be put in a row (or column)
-        fluidRow(
-            box(plotOutput("plot1", height = 250)),
-            
-            box(
+# Define UI for application that draws a histogram
+shinyUI(
+    dashboardPage(
+        dashboardHeader(title = "APP Projet Visualisation de données"),
+        dashboardSidebar(
+            sidebarMenu(
+                menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+                sliderInput(inputId = "slide", label = "label", min = 1, max = 7, value = 4)
+            )
+        ),
+        dashboardBody(
+            fluidRow(
                 title = "Controls",
-                sliderInput("slider", "Number of observations:", 1, 100, 50)
+                mainPanel(
+                    plotOutput("iris.graph")
+                )
             )
         )
     )
-)
-# Define UI for application that draws a histogram
-shinyUI(fluidPage(
-    
-    # Application title
-    titlePanel("Old Faithful Geyser Data"),
-    
-    # Sidebar with a slider input for number of bins
-    sidebarLayout(
-        sidebarPanel(
-            sliderInput(inputId = "slide", 
-                        label = "label", 
-                        min = 1, 
-                        max = 7, 
-                        value = 4),
-            textInput(inputId = "title", 
-                      label = "title",
-                      value = "title"
-            ),
-            
-            
-        ),
-        
-        mainPanel(
-            plotOutput("iris.graph")
-        )
-    )
-)
 )
