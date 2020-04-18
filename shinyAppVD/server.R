@@ -27,6 +27,7 @@ DEFENSEUR <- filter(data.Football,Position == c("DEFENSEUR GAUCHE") | Position =
 MILIEUX <- filter(data.Football,Position == c("MILIEUX OFFENSIF") | Position == c("MILIEUX GAUCHE") |Position == c("MILIEUX DROIT") | Position == c("MILIEUX CENTRAL") | Position == c("MILIEUX DEFENSIF"))
 ATTAQUANT <- filter(data.Football,Position == c("AILIER") | Position == c("ATTAQUANT"))
 
+
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
     # correlation    
@@ -37,7 +38,7 @@ shinyServer(function(input, output) {
     # Secteurs
     
     output$defensif <- renderPlotly({
-        ggplot(data.Football) + 
+        ggplot(data = data.Football, breaks = input$defensif) + 
             geom_point(aes(x = Defense, y = Interception),color ="#35b779")
     })
     
@@ -114,6 +115,30 @@ shinyServer(function(input, output) {
             scale_x_discrete("Position") +
             labs(x = "Position", y = "Effectif", title = "Nombre d'attaquant") +
             theme_gray()
+    })
+    
+    # la variable age 
+    
+    output$effectif <- renderPlot({
+        ggplot(data.Football) +
+            aes(x = Age) +
+            geom_histogram(fill ="#35b779", colour = "black",binwidth = .5) + 
+            geom_rug() +
+            ggtitle("Repartition des joueurs par evaluation") +
+            xlab("Age") +
+            ylab("Effectif") +
+            scale_y_continuous(limits = c(0,25))
+    })
+    
+    output$moyenne <- renderPlot({
+        ggplot(data.Football) + 
+            geom_boxplot(aes(x = Evaluation, y = Age), fill = "#35b779", color = "black")
+    })
+    
+    output$nuage <- renderPlot({
+        ggplot(data.Football) + 
+            geom_point(aes(x = Age, y = Evaluation), 
+                       color = "#35b779", size = 2)
     })
     
     output$msgOutput <- renderMenu({

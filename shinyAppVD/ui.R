@@ -18,7 +18,6 @@ library(GGally)
 library(plotly)
 library(ggcorrplot)
 
-
 # Define UI for application that draws a histogram
 shinyUI(
     dashboardPage(skin = "green",
@@ -63,7 +62,7 @@ shinyUI(
             sidebarMenu(
                 sidebarSearchForm("searchText", "buttonSearch", "Search"),
                 menuItem("Accueil", tabName = "accueil", icon = icon("dashboard")),
-                menuItem("Jouers", tabName = "nombre", icon = icon("user"))
+                menuItem("Age", tabName = "age", icon = icon("user-clock"))
             )
         ),
         dashboardBody(
@@ -84,6 +83,7 @@ shinyUI(
                                 tabBox(width = 12,
                                        tabPanel(title = "Defensif", 
                                        plotlyOutput("defensif"),
+                                       sliderInput("defensif", "Nombre d'observations", 1, 90, 45),
                                        ),
                                        tabPanel(title = "Offensif", 
                                         plotlyOutput("offensif"),
@@ -99,31 +99,55 @@ shinyUI(
                             box(width = 8,
                                 title = "Poste represent", status = "info",solidHeader = TRUE, plotOutput("represent"),
                             )
+                        ),
+                        fluidRow(
+                            
+                            box(
+                                title = "Nombre de jouers", status = "primary", solidHeader = TRUE,
+                                tabBox(width = 12,
+                                       tabPanel(title = "Attaquant", 
+                                                plotOutput("attaquant"),
+                                       ),
+                                       tabPanel(title = "Defenseurs", 
+                                                plotOutput("defenseurs"),
+                                       ),
+                                       tabPanel(title = "Milieux", 
+                                                plotOutput("milieux"),
+                                       ),
+                                       tabPanel(title = "Gardiens", 
+                                                plotOutput("gardiens"),
+                                       )
+                                )
+                            ),
+                            box(
+                                title = "La variable 'Age'", status = "danger", solidHeader = TRUE,
+                                tabBox(width = 12,
+                                       tabPanel(title = "Effectif ", 
+                                                plotOutput("effectif"),
+                                       ),
+                                       tabPanel(title = "Moyenne", 
+                                                plotOutput("moyenne"),
+                                       ),
+                                       tabPanel(title = "Nuage", 
+                                                plotOutput("nuage"),
+                                       )
+                                )
+                            ),
+                            
                         )
                 ),
-                tabItem(tabName = "nombre",
-                        fluidRow(
-
-                            box(
-                                title = "Nombre de jouers", status = "info", solidHeader = TRUE,
-                                tabBox(width = 12,
-                                    tabPanel(title = "Attaquant", 
-                                             plotOutput("attaquant"),
-                                    ),
-                                    tabPanel(title = "Defenseurs", 
-                                             plotOutput("defenseurs"),
-                                    ),
-                                    tabPanel(title = "Milieux", 
-                                             plotOutput("milieux"),
-                                    ),
-                                    tabPanel(title = "Gardiens", 
-                                             plotOutput("gardiens"),
-                                    )
+                tabItem(tabName = "age",
+                    fluidRow(
+                        box(
+                            title = "Pour le gardians", status = "primary", solidHeader = TRUE,
+                            tabBox(
+                                tabPanel(title = "1",
+                                         plotOutput("1")
+                                    
                                 )
                             )
-                            
-                            
                         )
+                    )
                 )
             )
         ) 
