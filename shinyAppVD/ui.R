@@ -18,7 +18,7 @@ shinyUI(
         dashboardSidebar(
             sidebarMenu(
                 menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-                sliderInput(inputId = "slide", label = "label", min = 1, max = 7, value = 4)
+                sliderInput(inputId = "slide", label = "controls", min = 1, max = 7, value = 4)
             )
         ),
         dashboardBody(
