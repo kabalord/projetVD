@@ -16,6 +16,7 @@ library(car)
 library(viridis)
 library(GGally)
 library(plotly)
+library(ggcorrplot)
 
 
 # Define UI for application that draws a histogram
@@ -62,10 +63,7 @@ shinyUI(
             sidebarMenu(
                 sidebarSearchForm("searchText", "buttonSearch", "Search"),
                 menuItem("Accueil", tabName = "accueil", icon = icon("dashboard")),
-                menuSubItem("Clubs", tabName = "clubs"),
-                menuSubItem("Jouers", tabName ="jouers" ),
-                menuItem("Detailed Analysis", tabName = "detailed analysis", badgeLabel = "New", badgeColor = "green"),
-                menuItem("Raw Data", tabName = "row data")
+                menuItem("Jouers", tabName = "nombre", icon = icon("user"))
             )
         ),
         dashboardBody(
@@ -77,35 +75,55 @@ shinyUI(
                             valueBoxOutput("date"),
                         ),
                         fluidRow(
-                            box(width = 12,
-                                title = "Summary", status = "primary", solidHeader = TRUE, verbatimTextOutput("sum"), 
+                            box(width = 4,
+                                title = "Correlation", status = "primary", solidHeader = TRUE, plotOutput("correlation"), 
+                                sliderInput("controlsCorrelation", "Mesure de correlation", -1, 1, 0),
+                            ),
+                            box(width = 8,
+                                title = "Secteurs", status = "danger", solidHeader = TRUE,
+                                tabBox(width = 12,
+                                       tabPanel(title = "Defensif", 
+                                       plotlyOutput("defensif"),
+                                       ),
+                                       tabPanel(title = "Offensif", 
+                                        plotlyOutput("offensif"),
+                                       )
+                                )
                             )
                             
                         ),
-                ),
-                tabItem(tabName = "clubs",
                         fluidRow(
-                            valueBox(15*200, "last match", icon = icon("hourglass-3")),
-                            valueBoxOutput("itemRequested")
-                        ),
-                        fluidRow(
-                            column(width = 12,
-                                   infoBox("Jouers force :", 1000, icon = icon("futbol")),
-                                   infoBox("Club league :", "Calcio italiano", icon = icon("trophy")),
-                                   infoBoxOutput("performance")
-                            )
-                        ),
-                        fluidRow(
-                            tabBox(
-                                tabPanel(title = "première tab", h3("contenu première tab")
-                                ),
-                                tabPanel(title = "deuxième tab", h3("contenu deuxième tab")
-                                )
+                            box(width = 4,
+                                title = "Repartition des jouers par evaluation", status = "warning",solidHeader = TRUE, plotOutput("evaluation"),
+                            ),
+                            box(width = 8,
+                                title = "Poste represent", status = "info",solidHeader = TRUE, plotOutput("represent"),
                             )
                         )
                 ),
-                tabItem(tabName = "jouers",
-                        h1("jouers tab")
+                tabItem(tabName = "nombre",
+                        fluidRow(
+
+                            box(
+                                title = "Nombre de jouers", status = "info", solidHeader = TRUE,
+                                tabBox(width = 12,
+                                    tabPanel(title = "Attaquant", 
+                                             plotOutput("attaquant"),
+                                    ),
+                                    tabPanel(title = "Defenseurs", 
+                                             plotOutput("defenseurs"),
+                                    ),
+                                    tabPanel(title = "Milieux", 
+                                             plotOutput("milieux"),
+                                    ),
+                                    tabPanel(title = "Gardiens", 
+                                             plotOutput("gardiens"),
+                                    )
+                                )
+                            )
+                            
+                            
+                        )
                 )
             )
         ) 
