@@ -1,0 +1,12 @@
+name: shinyAppVD
+title: shinyAppVD
+username:
+account: kabalord
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2140639
+bundleId: 3030965
+url: https://kabalord.shinyapps.io/shinyAppVD/
+when: 1587213341.43146
+asMultiple: FALSE
+asStatic: FALSE
