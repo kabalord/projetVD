@@ -1,7 +1,7 @@
 ---
-title: "Untitled"
-#author: "LIEPO Brice - Kevin"
-#date: "18/04/2020"
+title: "Projet INFO0808 Visualisation des Données"
+author: "ROA SERRANO Walter - LIEPO Brice-Kevin"
+date: "19/avril/2020"
 output: html_document
 ---
 
@@ -165,7 +165,7 @@ Nous pouvons constater sur le premier graphe que la plus petite evaluation est 8
 
 Sur le second graphe nous pouvons observer le nombre de joueurs par poste (detaille) et d'un simple coup d'oeil, en deduire que le poste le represente est "DEFENSEUR CENTRE" suivi par "MILIEUX CENTRAL" et ainsi de suite.
 
-Pour evoluer à certains postes, le joueur doit posseder certains critères. Certains postes necissitent d'être particulierement grand et costaud ou au contraire moins grand, rapide et agile comme en temoignent les représentations suivantes :
+Pour evoluer à certains postes, le joueur doit posseder certains critères. Certains postes nécessitent d'être particulierement grand et costaud ou au contraire moins grand, rapide et agile comme en temoignent les représentations suivantes :
 ```{r echo=FALSE, warning=FALSE}
 
 ggplot(GARDIEN, aes(x=Taille_en_cm, y=Poids_en_kg, colour=Position, shape=Position))+
@@ -221,7 +221,7 @@ Pour les gardiens :
 
 ```{r echo=FALSE, warning=FALSE}
 ggplot(GARDIEN) + 
-  geom_point(aes(x = Age, y = Evaluation), 
+  geom_point(aes(x = Age, y = Evaluation,colour=Position, shape=Position), 
             color = "#35b779", size = 2)
 ggplot(GARDIEN) + 
   geom_text(aes(x = Age, y = Evaluation, label = Nom), 

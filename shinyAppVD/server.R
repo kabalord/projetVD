@@ -37,15 +37,93 @@ shinyServer(function(input, output) {
     
     # Secteurs
     
-    output$defensif <- renderPlotly({
-        ggplot(data.Football, breaks = input$defensif) + 
-            geom_point(aes(x = Defense, y = Interception),color ="#35b779")
+    output$representationGardian<- renderPlot({
+        def <- data.Football %>% filter(Position %in% c("GARDIEN"))
+        ggplot(data.Football, aes(Evaluation, Competence_Gardien)) +
+            geom_point(aes(colour = Position)) + 
+            geom_encircle(data = def, linetype = 2, color = "red")
     })
     
-    output$offensif <- renderPlotly({
-        ggplot(data.Football) + 
-            geom_point(aes(x = Attaque, y = Dribbles),color ="#35b779")
+    output$representationDefensif <- renderPlot({
+        def <- data.Football %>% filter(Position %in% c("DEFENSEUR CENTRE","DEFENSEUR GAUCHE","DEFENSEUR DROIT","MILIEUX DEFENSIF"))
+        ggplot(data.Football, aes(Defense, Interception)) +
+            geom_point(aes(colour = Position)) + 
+            geom_encircle(data = def, linetype = 2, color = "red")
     })
+    
+    output$representationOffensif <- renderPlot({
+        off <- data.Football %>% filter(!Position %in% c("DEFENSEUR CENTRE","DEFENSEUR GAUCHE","DEFENSEUR DROIT", "MILIEUX DEFENSIF","GARDIEN"))
+        ggplot(data.Football, aes(Attaque, Dribbles)) +
+            geom_point(aes(colour = Position)) + 
+            geom_encircle(data = off, linetype = 2, color = "red")
+    })
+    
+    # Taille et poids par position
+    
+    output$poidsTailleGardien<- renderPlot({
+        ggplot(GARDIEN, aes(x=Taille_en_cm, y=Poids_en_kg, colour=Position, shape=Position))+
+            geom_point()
+    })
+    
+    output$poidsTailleDefenseur<- renderPlot({
+        ggplot(DEFENSEUR, aes(x=Taille_en_cm, y=Poids_en_kg, colour=Position, shape=Position))+
+            geom_point()
+    })
+    
+    output$poidsTailleMilieux<- renderPlot({
+        ggplot(MILIEUX, aes(Taille_en_cm, Poids_en_kg, colour=Position, shape=Position)) +
+            geom_point()
+    })
+    
+    output$poidsTailleAttaquant<- renderPlot({
+        ggplot(ATTAQUANT, aes(Taille_en_cm, Poids_en_kg,colour=Position, shape=Position)) +
+            geom_point()
+    })
+    
+    # Age par position
+    
+    output$ageGardien<- renderPlot({
+        ggplot(GARDIEN) + 
+            geom_point(aes(x = Age, y = Evaluation,colour=Position, shape=Position), 
+                       color = "#35b779", size = 2)
+    })
+    
+    output$ageDefenseur<- renderPlot({
+        ggplot(DEFENSEUR) + 
+            geom_point(aes(x = Age, y = Evaluation,colour=Position, shape=Position))
+    })
+    
+    output$ageMilieux<- renderPlot({
+        ggplot(MILIEUX) + 
+            geom_point(aes(x = Age, y = Evaluation,colour=Position, shape=Position))
+    })
+    
+    output$ageAttaquant<- renderPlot({
+        ggplot(ATTAQUANT) + 
+            geom_point(aes(x = Age, y = Evaluation,colour=Position, shape=Position))
+    })
+    
+    
+    # pied forte  
+    
+    output$moyennePiedForte <- renderPlot({
+        ggplot(data.Football,aes(x = Pied_Fort, y = Evaluation, fill=Pied_Fort, colour=Pied_Fort)) +
+            geom_boxplot(alpha=0.5) + 
+            geom_jitter(width=0.25)
+        
+        
+    })
+    
+    output$effectifsPiedForte <- renderPlot({
+        ggplot(data.Football, aes(Evaluation)) +
+            geom_histogram(aes(fill = Pied_Fort, color = Pied_Fort), bins = 20, 
+                           position = "identity", alpha = 0.5)+
+            scale_fill_viridis_d() +
+            scale_color_viridis_d()
+        
+    })
+    
+    
     
     # repartition des jouers par evaluation
     
@@ -93,6 +171,8 @@ shinyServer(function(input, output) {
     output$tresTable <- renderValueBox({
         valueBox("Information", icon = icon("eye"),"Détaillé", color = "light-blue")
     })
+    
+    
     
     # Summary    
     output$sum <- renderPrint({

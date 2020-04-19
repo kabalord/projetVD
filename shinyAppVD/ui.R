@@ -56,9 +56,10 @@ shinyUI(
         ),
         dashboardSidebar(
             sidebarMenu(
-                menuItem("Accueil", tabName = "accueil", icon = icon("dashboard"),badgeLabel = "Overview", badgeColor = "red"),
-                menuItem("Les tables", tabName = "tables", icon = icon("table"),badgeLabel = "New", badgeColor = "green"),
-                menuItem("Les graphes", tabName = "graphes", icon = icon("chart-bar"),badgeLabel = "New", badgeColor = "green")
+                menuItem("Accueil", tabName = "accueil", icon = icon("dashboard")),
+                menuItem("Les Plots", tabName = "plots", icon = icon("chart-line")),
+                menuItem("Les tables", tabName = "tables", icon = icon("table")),
+                menuItem("Les graphes", tabName = "graphes", icon = icon("chart-bar"))
             )
         ),
         dashboardBody(
@@ -85,8 +86,64 @@ shinyUI(
                                 title = tagList(shiny::icon("user-tag"), "Repartition des jouers par poste"), status = "warning", solidHeader = TRUE, plotOutput("repartition"),
                             )
                         )
-
  
+                ),
+                tabItem(tabName = "plots",
+                        fluidRow(
+                            box(width = 4,
+                                title = tagList(shiny::icon("arrows-alt"), "Répresentation Gardien"), status = "warning", solidHeader = TRUE, plotOutput("representationGardian"),
+                            ),
+                            box(width = 4,
+                                title = tagList(shiny::icon("sort-amount-down"), "Répresentation Secteur Defensif"), status = "danger", solidHeader = TRUE, plotOutput("representationDefensif"),
+                            ),
+                            box(width = 4,
+                                title = tagList(shiny::icon("futbol"), "Répresentation Secteur Offensif"), status = "success", solidHeader = TRUE, plotOutput("representationOffensif"),
+                            )
+                        ),
+                        fluidRow(
+                            box(
+                                title = tagList(shiny::icon("balance-scale"), "Taille et Poids selon la position"), status = "success", solidHeader = TRUE,
+                                tabBox(width = 12,
+                                    tabPanel(title = "Gardien",
+                                             plotOutput("poidsTailleGardien")
+                                    ),
+                                    tabPanel(title = "Defenseur",
+                                             plotOutput("poidsTailleDefenseur")
+                                    ),
+                                    tabPanel(title = "Milieux",
+                                             plotOutput("poidsTailleMilieux")
+                                    ),
+                                    tabPanel(title = "Attaquant",
+                                             plotOutput("poidsTailleAttaquant")
+                                    )
+                                )
+                            ),
+                            box(
+                                title = tagList(shiny::icon("user-clock"), "Évaluation de l'age selon la position"), status = "info", solidHeader = TRUE,
+                                tabBox(width = 12,
+                                       tabPanel(title = "Gardien",
+                                                plotOutput("ageGardien")
+                                       ),
+                                       tabPanel(title = "Defenseur",
+                                                plotOutput("ageDefenseur")
+                                       ),
+                                       tabPanel(title = "Milieux",
+                                                plotOutput("ageMilieux")
+                                       ),
+                                       tabPanel(title = "Attaquant",
+                                                plotOutput("ageAttaquant")
+                                       )
+                                )
+                            ),
+                        ),
+                        fluidRow(
+                            box(
+                                title = tagList(shiny::icon("chart-line"), "Moyenne Pied Fort"), status = "info", solidHeader = TRUE, plotOutput("moyennePiedForte"),
+                            ),
+                            box(
+                                title = tagList(shiny::icon("user-friends"), "Effectifs Pied Fort"), status = "warning", solidHeader = TRUE, plotOutput("effectifsPiedForte"),
+                            )
+                        ),
                 ),
                 tabItem(tabName = "tables",
                         fluidRow(
