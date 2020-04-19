@@ -158,21 +158,27 @@ shinyServer(function(input, output) {
                 geom_point()
         }
     )
-    output$myhist2 = renderPlot({
+    output$myhist2 = renderPlot(
+        {
             DEFENSEUR%>%filter(Taille_en_cm <= input$Slide & Poids_en_kg <= input$Slide2)%>% 
                 ggplot(aes(x=Taille_en_cm, y=Poids_en_kg, colour=Position, shape=Position))+
                 geom_point()
-        })
-    output$myhist3 = renderPlot({
+        } 
+    )
+    output$myhist3 = renderPlot(
+        {
             MILIEUX%>%filter(Taille_en_cm <= input$Slide & Poids_en_kg <= input$Slide2)%>% 
                 ggplot(aes(x=Taille_en_cm, y=Poids_en_kg, colour=Position, shape=Position))+
                 geom_point()
-        })
-    output$myhist4 = renderPlot({
+        }
+    )
+    output$myhist4 = renderPlot(
+        {
             ATTAQUANT%>%filter(Taille_en_cm <= input$Slide & Poids_en_kg <= input$Slide2)%>% 
                 ggplot(aes(x=Taille_en_cm, y=Poids_en_kg, colour=Position, shape=Position))+
                 geom_point()
-        })
+        } 
+    )
 
     # tables
     

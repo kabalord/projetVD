@@ -163,7 +163,7 @@ shinyUI(
                             ),
                             box(
                                 title = tagList(shiny::icon("sort-amount-up"), "quatre"), status = "danger", solidHeader = TRUE, 
-                                plotOutput("myhist1"), 
+                                plotOutput("myhist1"),
                                 plotOutput("myhist2"),
                                 plotOutput("myhist3"),
                                 plotOutput("myhist4"),
