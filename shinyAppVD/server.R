@@ -71,16 +71,40 @@ shinyServer(function(input, output) {
     # value boxes accueil
     output$observations <- renderValueBox({
         valueBox(
-            nrow(data.Football), icon = icon("list"), "Observations", color = "purple")
+            nrow(data.Football), icon = icon("list-ol"), "Observations", color = "purple")
     })
     
     output$variables <- renderValueBox({
         valueBox(
-            ncol(data.Football), icon = icon("columns"), "Variables", color = "yellow")
+            ncol(data.Football), icon = icon("columns"), "Variables", color = "teal")
     })
     
     output$date <- renderValueBox({
         valueBox(2017, icon = icon("calendar"),"Date d'analyse", color = "light-blue")
+    })
+    
+    # value boxes tables
+    output$unoTable <- renderValueBox({
+        valueBox("Access", icon = icon("database"),"Database", color = "purple")
+    })
+    
+    output$dosTable <- renderValueBox({
+        valueBox("Search", icon = icon("search"),"Filtre", color = "teal")
+    })
+    output$tresTable <- renderValueBox({
+        valueBox("Information", icon = icon("eye"),"Détaillé", color = "light-blue")
+    })
+    
+    # value boxes graphes
+    output$graphesUno <- renderValueBox({
+        valueBox(2017, icon = icon("chart-bar"),"Date d'analyse", color = "purple")
+    })
+    
+    output$graphesDos <- renderValueBox({
+        valueBox(2017, icon = icon("chart-area"),"Date d'analyse", color = "teal")
+    })
+    output$graphesTres <- renderValueBox({
+        valueBox(2017, icon = icon("chart-line"),"Date d'analyse", color = "light-blue")
     })
     
     # Summary    

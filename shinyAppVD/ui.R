@@ -76,39 +76,43 @@ shinyUI(
                             valueBoxOutput("variables"),
                             valueBoxOutput("date"),
                         ),
-                        fluidRow(
-                             
-                        ),
+
                         fluidRow(
                             box(width = 12,
-                                title = "Summary", status = "danger", solidHeader = TRUE, verbatimTextOutput("sum"),  
+                                title = tagList(shiny::icon("list"), "Summary"), status = "danger", solidHeader = TRUE, verbatimTextOutput("sum"),  
                             ),
 
                             
                         ),
                         fluidRow(
                             box(width = 4,
-                                title = "Correlation", status = "primary", solidHeader = TRUE, plotOutput("correlation"), 
+                                title = tagList(shiny::icon("chart-line"), "Correlation"), status = "primary", solidHeader = TRUE, plotOutput("correlation"), 
                             ),
                             box(width = 8,
-                                title = "Reparition par poste", status = "warning", solidHeader = TRUE, plotOutput("repartition"),
+                                title = tagList(shiny::icon("user-tag"), "Repartition par poste"), status = "warning", solidHeader = TRUE, plotOutput("repartition"),
                             )
                         )
 
  
                 ),
                 tabItem(tabName = "tables",
+                        fluidRow(
+                                valueBoxOutput("unoTable"),
+                                valueBoxOutput("dosTable"),
+                                valueBoxOutput("tresTable"),
+
+                        ),
 
                         fluidRow(
                             box(
-                                title = tagList(shiny::icon("futbol"), "Milieux"),
-                                status = "primary",
+                                title = tagList(shiny::icon("arrows-alt"), "Milieux"),
+                                status = "warning",
                                 solidHeader = TRUE,
                                 DT::dataTableOutput("milieux"),
                             ),
                             box(
-                                title = tagList(shiny::icon("futbol"), "Defenseurs"),
-                                status = "primary",
+                                title = tagList(shiny::icon("sort-amount-down"), "Defenseurs"),
+                                status = "danger",
                                 solidHeader = TRUE,
                                 DT::dataTableOutput("defenseurs"),
                             ),
@@ -121,8 +125,8 @@ shinyUI(
                                 DT::dataTableOutput("gardiens"),
                             ),
                             box(
-                                title = tagList(shiny::icon("futbol"), "Attaquants"),
-                                status = "primary",
+                                title = tagList(shiny::icon("sort-amount-up"), "Attaquants"),
+                                status = "success",
                                 solidHeader = TRUE,
                                 DT::dataTableOutput("attaquants"),
                             ),
@@ -130,12 +134,18 @@ shinyUI(
                 ),
                 tabItem(tabName = "graphes",
                         fluidRow(
+                            valueBoxOutput("graphesUno"),
+                            valueBoxOutput("graphesDos"),
+                            valueBoxOutput("graphesTres"),
+                            
+                        ),
+                        fluidRow(
                           box(
-                              title = "primière graph", status = "primary", solidHeader = TRUE, plotOutput("EvalPlot"),
+                              title = tagList(shiny::icon("sort-amount-up"), "un"), status = "info", solidHeader = TRUE, plotOutput("EvalPlot"),
                               sliderInput('Slide', 'Mex evaluation', min = 80, max = 100, value = 82)
                           ),
                           box(
-                              title = "deuxième graph", status = "primary", solidHeader = TRUE, plotOutput("myhist"),
+                              title = tagList(shiny::icon("sort-amount-up"), "deux"), status = "warning", solidHeader = TRUE, plotOutput("myhist"),
                               selectInput('var', "Select the Variable", choices = x, selected = 1),
                               br(),
                               sliderInput('Slide', 'Mex evaluation', min = 82, max = 100, value = 82),
@@ -143,13 +153,13 @@ shinyUI(
                         ),
                         fluidRow(
                             box(
-                                title = "troisième graph", status = "primary", solidHeader = TRUE, plotOutput("myhisto"),
+                                title = tagList(shiny::icon("sort-amount-up"), "trois"), status = "primary", solidHeader = TRUE, plotOutput("myhisto"),
                                 selectInput('var', "Select the Variable", choices = x, selected = 1),
                                 br(),
                                 sliderInput('Slide', 'Mex evaluation', min = 82, max = 100, value = 82)
                             ),
                             box(
-                                title = "quatrième graph", status = "primary", solidHeader = TRUE, 
+                                title = tagList(shiny::icon("sort-amount-up"), "quatre"), status = "danger", solidHeader = TRUE, 
                                 plotOutput("myhist1"), 
                                 plotOutput("myhist2"),
                                 plotOutput("myhist3"),
