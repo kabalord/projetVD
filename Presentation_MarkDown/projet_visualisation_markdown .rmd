@@ -183,10 +183,10 @@ ggplot(ATTAQUANT, aes(Taille_en_cm, Poids_en_kg,colour=Position, shape=Position)
 
 Ces représentations nous demontrent que : 
 
-- La plupart des meilleurs gardiens dans le monde du football son grand de taille et un poids assez elevé. Ce qui nous laisse penser qu'un gardien aillant ces critères a de forte chance de faire partir des meilleurs.
+- La plupart des meilleurs gardiens dans le monde du football son grand de taille et un poids assez elevé. Ce qui nous laisse penser qu'un gardien aillant ces critères a de forte chance de faire partie des meilleurs.
 - Très peu de bons défenseur centraux ont une taille inférieure à 185cm et un poids inférieur à 75kg. Par conséquent la taille et le poids sont des atouts déterminants à ce poste. Contrairement au poste de défenseur droit et gauche, où le joueur a besoin de vitesse et d'agilité. Du coup la taille et le poids ne sont pas indispensables.
-- Concernant les milieux de terrain, les critères ci dessus ne sont pas indispensables pour faire partir des meilleurs. Un joueur peux avoir une petite taille et etre performant à son poste et inversement.
-- Pour le secteur offensif, la majorité des ailiers font moins 180cm et moins de 80kg contrairement aux attaquants dont la majorité ont une taille supérieur à 180cm et un poids supérieur 75kg. Par conséquent un ailier ou un attaquant qui possède ces caractéristiques pourrait faire partir des meilleurs.  
+- Concernant les milieux de terrain, les critères ci dessus ne sont pas indispensables pour faire partie des meilleurs. Un joueur peux avoir une petite taille et etre performant à son poste et inversement.
+- Pour le secteur offensif, la majorité des ailiers font moins 180cm et moins de 80kg contrairement aux attaquants dont la majorité ont une taille supérieur à 180cm et un poids supérieur 75kg. Par conséquent un ailier ou un attaquant qui possède ces caractéristiques pourrait faire partie des meilleurs.  
 
 2. La variable "Age"
 
@@ -339,7 +339,7 @@ kable(head(filter(MILIEUX[c(1,4,8)],Pied_Fort == "DROIT")))
 
 ggplot(MILIEUX,aes(x = Pied_Fort, y = Evaluation, fill=Pied_Fort, colour=Pied_Fort)) +
   geom_boxplot(alpha=0.5) +
-  labs(x = "Pied fort", y = "Evaluation", title = "Gardiens") +
+  labs(x = "Pied fort", y = "Evaluation", title = "Milieux") +
   geom_jitter(width=0.25)
 
 ggplot(data = MILIEUX, aes(x = Passe, y = Evaluation)) + 
@@ -358,20 +358,20 @@ kable(head(filter(ATTAQUANT[c(1,4,8)],Pied_Fort == "DROIT")))
 
 ggplot(ATTAQUANT,aes(x = Pied_Fort, y = Evaluation, fill=Pied_Fort, colour=Pied_Fort)) +
   geom_boxplot(alpha=0.5) +
-  labs(x = "Pied fort", y = "Evaluation", title = "Gardiens") +
+  labs(x = "Pied fort", y = "Evaluation", title = "Attaquants") +
   geom_jitter(width=0.25)
 
 ggplot(data = ATTAQUANT, aes(x = Defense, y = Evaluation)) + 
   geom_point(alpha = 0.2) + 
-  labs(x = "Defense", y = "Evaluation", title = "Milieux") +
+  labs(x = "Defense", y = "Evaluation", title = "Attaquants") +
   geom_text(data = filter(MILIEUX,Pied_Fort == "GAUCHE"), aes(label = Nom), color = "#35b779", size = 2)
 
 ```
 
 Concernant les attaquants, nous avons 7 gauchers et 31 droitiers.
-Nous pouvons constater que le pied fort n'influence pas grandement le positionnement de l'attaquant. Tou comme pour le milieux, sa position dependra de sa preference ou sa capacite a etre efficace et influent sur le terrain.
+Nous pouvons constater que le pied fort n'influence pas grandement le positionnement de l'attaquant. Tout comme pour le milieux, sa position dependra de sa preference ou sa capacite a etre efficace et influent sur le terrain.
 
-Sur les graphes qui suivent les differentes matrices de chaque poste, nous faisons la meme remarque a savoir que les gauchers sont moins nombreux que les droitiers et qu'ils ont une moyenne d'evaluation beaucoup plus elevee grace a leur nombre reduit, a l'excepetion des milieux de terrain.
+Sur les graphes qui suivent les differentes matrices de chaque poste, nous faisons la même remarque a savoir que les gauchers sont moins nombreux que les droitiers et qu'ils ont une moyenne d'evaluation beaucoup plus elevee grace a leur nombre reduit, a l'exception des milieux de terrain.
 
 ## CONCLUSION
 Pour conclure, la visualisation nous a permi d'avoir une idée assez précise du contenu global de notre jeu de données, et sur quelle base certaines valeurs sont attribuées à certains individus. 
