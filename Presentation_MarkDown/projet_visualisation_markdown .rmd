@@ -1,0 +1,384 @@
+---
+title: "Untitled"
+#author: "LIEPO Brice - Kevin"
+#date: "18/04/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(GGally)
+library(knitr)
+library(ggalt)
+
+
+data.Football <- read.csv2("data_football.csv", sep = ",")
+data.Football$Nom <- as.character(str_to_upper(data.Football$Nom))
+data.Football$Pied_Faible <- as.character(str_to_upper(data.Football$Pied_Faible))
+data.Football$Pied_Faible <- as.factor(str_to_upper(data.Football$Pied_Faible))
+data.Football <- as.tibble(data.Football)
+GARDIEN <- filter(data.Football,Position == "GARDIEN")
+DEFENSEUR <- filter(data.Football,Position == c("DEFENSEUR GAUCHE") | Position == c("DEFENSEUR DROIT") |Position == c("DEFENSEUR CENTRE"))
+MILIEUX <- filter(data.Football,Position == c("MILIEUX OFFENSIF") | Position == c("MILIEUX GAUCHE") |Position == c("MILIEUX DROIT") | Position == c("MILIEUX CENTRAL") | Position == c("MILIEUX DEFENSIF"))
+ATTAQUANT <- filter(data.Football,Position == c("AILIER") | Position == c("ATTAQUANT"))
+```
+
+## I) INTRODUCTION
+
+La visualisation de données désigne la représentation graphique d'informations et de données. Elle est aujourd'hui exploitée par de nombreuses entreprises qui gèrent de vastes volumes de données issues notamment de base de donéees, de CRM ou encore de tableurs.
+Ces entreprises la privilégient désormais pour les raisons suivantes : 
+
+- Elle facilite la compréhension d'un grand jeu de données;
+- Elle synthétise les informations;
+- Elle rend les données accessibles a un plus grand nombre de personnes.
+
+Elle est donc devenu indispensable pour analyser d'énormes quantité d'informations ou étudier de grand volumes de données et joue un role de plus en plus important dans les domaines scientifiques et techniques, dans l'administration, dans la finance, en marketing, dans le secteur des services ou dans le sport.
+
+## II) OBJECTIFS DU PROJET
+
+Ce projet, réalisé dans le cadre du cours de visualisation de données, consiste a :
+
+- Enrichir nos connaisances en R;
+- Utiliser differentes techniques de visualisation de données mise a notre disposition par R;
+- Appliquer ces différentes techniques sur un jeu de donnees afin de faire une visualisation assez complete;
+- Apprendre a faire le choix des graphes et des diagrammes les plus pertinents;
+- Comprendre, interpreter et analyser les différents graphes obtenus;
+- Se familiariser avec l'utilisation des techniques de visualisation propres a R.
+
+## III) PRESENTATION DES DONNEES
+
+Le jeu de données utilisé pour notre analyse, concernent le domaine du football. Il rassemble l'ensemble des observations sur plus de 17.588 footballeurs decrient par 53 variables. 
+Ces différentes caractéristiques datent de 2017 et proviennent d'analyses de différents spécialistes du domaine du football. 
+Pour une meilleure lisibilite, nous n'allons afficher que les 4 premieres variables des 10 premiers individus de notre jeu de données :
+```{r echo=FALSE,warning=FALSE}
+kable(head(x = data.Football[,1:5],10))
+```
+
+Apres avoir affiné nos données, elles contiennent maintenant 150 observations et 25 variables, toutes decrivant les caractéristiques propres a chacun des footballeurs.
+```{r echo=FALSE,warning=FALSE}
+str(data.Football)
+summary(data.Football)
+```
+
+Les relations entre ces 25 différentes variables sont demontrées par la représentation suivante. Cette representation contient le nom des colonnes numeriques classées dans l'ordre croissant, de Evaluation a Competence_Gardien, du bas vers le haut. 
+Pour une meilleure compréhension nous allons d'abord afficher le nom des differentes colonnes de notre jeu de données. 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+colnames(data.Football)
+ggcorr(data.Football)
+```
+
+Ce graphe représente la correlation entre les différentes variables de notre jeu de données. 
+Premièrement, nous pouvons remarquer que plus le carré est bleu (tres proche de -1.0), et moins il y a de relation entre les 2 variables. A l'exemple de Competence_Gardien et Frappe ou Competence_Gardien et Dribbles, ce qui est tout a fait normal car très peu de gardien de but, voir aucun, ne possede une bonne qualite de frappe ou de dribbles.
+
+Deuxiemement, plus le carré est orange (tres proche de 1.0), et plus il y a de relation entre les 2 variables. A l'exemple de Frappe et Attaque, ce qui est tout aussi normal car la plupart des joueurs offensifs (attaquants) possèdent de bonnes capacités face au but.
+
+L'ensemble des individus de notre jeu de données est le suivant : 
+
+Pour représenter les gardiens, nous allons utiliser les variables Competence_Gardien et Evaluation :
+```{r echo=FALSE,warning=FALSE}
+def <- data.Football %>% filter(Position %in% c("GARDIEN"))
+ggplot(data.Football, aes(Evaluation, Competence_Gardien)) +
+    geom_point(aes(colour = Position)) + 
+  geom_encircle(data = def, linetype = 2, color = "red")
+```
+
+Pour représenter le secteur defensif, nous allons utiliser les variables Defense et Interception :
+```{r echo=FALSE,warning=FALSE}
+def <- data.Football %>% filter(Position %in% c("DEFENSEUR CENTRE","DEFENSEUR GAUCHE","DEFENSEUR DROIT","MILIEUX DEFENSIF"))
+ggplot(data.Football, aes(Defense, Interception)) +
+    geom_point(aes(colour = Position)) + 
+  geom_encircle(data = def, linetype = 2, color = "red")
+```
+
+Pour representer le secteur offensif, nous allons utiliser les variables Attaque et Dribbles :
+```{r echo=FALSE,warning=FALSE}
+off <- data.Football %>% filter(!Position %in% c("DEFENSEUR CENTRE","DEFENSEUR GAUCHE","DEFENSEUR DROIT", "MILIEUX DEFENSIF","GARDIEN"))
+ggplot(data.Football, aes(Attaque, Dribbles)) +
+    geom_point(aes(colour = Position)) + 
+  geom_encircle(data = off, linetype = 2, color = "red")
+```
+
+Nos données sont composées de 5 variables de types "factor", dont les plus importantes dans le dommaine du football : Position, Age, Pied_Fort qui représentent respectivement la position préférencielle du joueur sur le terrain, son age, et son pied fort.
+
+1. La variable "Position"
+
+Les différentes positions présentes dans notre jeu de données sont les suivantes :
+
+Gardiens : Nous pouvons constater sur ce graphe qu'il y a 20 gardien.
+```{r echo=FALSE,warning=FALSE}
+#DT::datatable
+kable(head(GARDIEN[,1:8]))
+ggplot(GARDIEN) + geom_bar(aes(x = Position),fill ="#35b779", colour = "black") + 
+  scale_x_discrete("Position") +
+  labs(x = "Position", y = "Effectif", title = "Nombre de gardiens") +
+  theme_gray()
+```
+
+Défenseurs (Centre, Gauche, Droit) : Nous pouvons constater sur ce graphe qu'il y a 34 "DEFENSEUR CENTRE", 3 "DEFENSEUR DROIT" et 4 "DEFENSEUR GAUCHE"
+```{r echo=FALSE,warning=FALSE}
+kable(head(DEFENSEUR[,1:8]))
+ggplot(DEFENSEUR) + geom_bar(aes(x = Position),fill ="#35b779", colour = "black") + 
+  scale_x_discrete("Position") +
+  labs(x = "Position", y = "Effectif", title = "Nombre de defenseurs") +
+  theme_gray()
+```
+
+Milieux (Defensif, Central, Gauche, Droit, Offensif) : Nous pouvons constater sur ce graphe que notre jeu de données sur les Milieux contient beaucoup plus de poste "MILIEUX CENTRAL" 
+```{r echo=FALSE,warning=FALSE}
+kable(head(MILIEUX[,1:8]))
+ggplot(MILIEUX) + geom_bar(aes(x = Position),fill ="#35b779", colour = "black") + 
+  scale_x_discrete("Position") +
+  labs(x = "Position", y = "Effectif", title = "Nombre de milieux") +
+  theme_gray()
+```
+
+Attaquants (Ailier, Attaquant) : Nous pouvons constater que notre jeu de donnees est compose d'autant d'ailier que d'attaquants normaux.
+```{r echo=FALSE,warning=FALSE}
+kable(head(ATTAQUANT[,1:8]))
+ggplot(ATTAQUANT) + geom_bar(aes(x = Position),fill ="#35b779", colour = "black") + 
+  scale_x_discrete("Position") +
+  labs(x = "Position", y = "Effectif", title = "Nombre d'attaquant") +
+  theme_gray()
+```
+
+Le joueur se caractérise aussi par sa note globale (Evaluation) qui lui est attribue. Nous allons afficher la repartition des joueurs par evaluation.
+Par la suite nous allons vous montrer la distribution globale des evaluations de ceux ci par rapport a leur poste respectifs.
+```{r echo=FALSE,warning=FALSE}
+ggplot(data.Football) +
+  aes(x = Evaluation) +
+  geom_histogram(fill ="#35b779", colour = "black",binwidth = .5) + 
+  geom_rug() +
+  ggtitle("Repartition des joueurs par evaluation") +
+  xlab("Evaluation") +
+  ylab("Effectif") +
+  theme_light() +
+  scale_y_continuous(limits = c(0,50))
+
+ggplot(data = data.Football) + 
+  geom_histogram(aes(x = Evaluation),binwidth=.5,fill ="#35b779", colour = "black") + 
+  facet_wrap(~Position)
+```
+
+Nous pouvons constater sur le premier graphe que la plus petite evaluation est 82 car grace un simple coup d'oeil nous pouvons deduire que la ligne horizontale situee entre 85 et 90 est 87.5. Par consequent celle situe avant 85 est 82.5. Ce qui nous emmene a penser a juste titre que l'evaluation la plus petite est 82 et est possede par 1 seul joueur. Et la plus grande, 94, possede par 1 seul joueur.
+
+Sur le second graphe nous pouvons observer le nombre de joueurs par poste (detaille) et d'un simple coup d'oeil, en deduire que le poste le represente est "DEFENSEUR CENTRE" suivi par "MILIEUX CENTRAL" et ainsi de suite.
+
+Pour evoluer à certains postes, le joueur doit posseder certains critères. Certains postes necissitent d'être particulierement grand et costaud ou au contraire moins grand, rapide et agile comme en temoignent les représentations suivantes :
+```{r echo=FALSE, warning=FALSE}
+
+ggplot(GARDIEN, aes(x=Taille_en_cm, y=Poids_en_kg, colour=Position, shape=Position))+
+  geom_point()
+
+ggplot(DEFENSEUR, aes(x=Taille_en_cm, y=Poids_en_kg, colour=Position, shape=Position))+
+  geom_point()
+
+ggplot(MILIEUX, aes(Taille_en_cm, Poids_en_kg, colour=Position, shape=Position)) +
+    geom_point()
+
+ggplot(ATTAQUANT, aes(Taille_en_cm, Poids_en_kg,colour=Position, shape=Position)) +
+    geom_point()
+```
+
+Ces représentations nous demontrent que : 
+
+- La plupart des meilleurs gardiens dans le monde du football son grand de taille et un poids assez elevé. Ce qui nous laisse penser qu'un gardien aillant ces critères a de forte chance de faire partir des meilleurs.
+- Très peu de bons défenseur centraux ont une taille inférieure à 185cm et un poids inférieur à 75kg.Par conséquent la taille et le poids sont des atouts déterminants à ce poste. Contrairement au poste de défenseur droit et gauche, où le joueur a besoin de vitesse et d'agilité. DU coup la taille et le poids ne sont pas indispensables.
+- Concernant les milieux de terrain, les critères ci dessus ne sont pas indispensables pour faire partir des meilleurs. Un joueur peux avoir une petite taille et etre performant à son poste et inversement.
+- Pour le secteur offensif, la majorité des ailiers font moins 180cm et moins de 80kg contrairement aux attaquants dont la majorité ont une taille supérieur à 180cm et un poids supérieur 75kg. Par conséquent un ailier ou un attaquant qui possède ces caractéristiques pourrait faire partir des meilleurs.  
+
+2. La variable "Age"
+
+Notre jeu de données contient des joueurs agés de 22 a 39 ans. Le graphe suivant nous montre la repartition globale des joueurs selon leur age.
+```{r echo=FALSE, warning=FALSE}
+ggplot(data.Football) +
+  aes(x = Age) +
+  geom_histogram(fill ="#35b779", colour = "black",binwidth = .5) + 
+  geom_rug() +
+  ggtitle("Repartition des joueurs par evaluation") +
+  xlab("Age") +
+  ylab("Effectif") +
+  scale_y_continuous(limits = c(0,25))
+```
+
+Ce graphe nous démontre que notre jeu de données contient par exemple 5 joueurs de 22 ans ou encore 20 joueurs de 29 ans.
+
+Le graphe suivant nous présente la repartition et la moyenne d'age de notre jeu de données :
+```{r echo=FALSE, warning=FALSE}
+ggplot(data.Football) + 
+  geom_boxplot(aes(x = Evaluation, y = Age), fill = "#35b779", color = "black")
+```
+
+L'age est un attribut assez important pour un sportif et encore plus pour un joueur de football. Les joueurs sont repatis comme suit selon leur age :
+```{r echo=FALSE, warning=FALSE}
+ggplot(data.Football) + 
+  geom_point(aes(x = Age, y = Evaluation), 
+            color = "#35b779", size = 2)
+```
+
+Pour les gardiens : 
+
+```{r echo=FALSE, warning=FALSE}
+ggplot(GARDIEN) + 
+  geom_point(aes(x = Age, y = Evaluation), 
+            color = "#35b779", size = 2)
+ggplot(GARDIEN) + 
+  geom_text(aes(x = Age, y = Evaluation, label = Nom), 
+            color = "#35b779", size = 2)
+```
+
+Pour les defenseurs :
+
+```{r echo=FALSE, warning=FALSE}
+ggplot(DEFENSEUR) + 
+  geom_point(aes(x = Age, y = Evaluation,colour=Position, shape=Position))
+ggplot(DEFENSEUR) + 
+  geom_text(aes(x = Age, y = Evaluation, label = Nom), 
+            color = "#35b779", size = 2)
+```
+
+Pour les milieux :
+
+```{r echo=FALSE, warning=FALSE}
+ggplot(MILIEUX) + 
+  geom_point(aes(x = Age, y = Evaluation,colour=Position, shape=Position))
+ggplot(MILIEUX) + 
+  geom_text(aes(x = Age, y = Evaluation, label = Nom), 
+            color = "#35b779", size = 2)
+```
+
+Pour les attaquants : 
+
+```{r echo=FALSE, warning=FALSE}
+ggplot(ATTAQUANT) + 
+  geom_point(aes(x = Age, y = Evaluation,colour=Position, shape=Position))
+ggplot(ATTAQUANT) + 
+  geom_text(aes(x = Age, y = Evaluation, label = Nom), 
+            color = "#35b779", size = 2)
+```
+
+Sachant que notre jeu de données contient les 150 meilleurs joueurs de football, ces graphes nous démontrent que la plupart des joueurs de football ont de forte chance d'atteindre leur meilleur niveau entre 25 et 30 ans.
+
+3. La variable "Pied_Fort"
+
+La variable Pied_Fort represente le pied fort du joueur a savoir le droit ou le gauche.
+```{r echo=FALSE, warning=FALSE}
+ggplot(data.Football,aes(x = Pied_Fort, y = Evaluation, fill=Pied_Fort, colour=Pied_Fort)) +
+  geom_boxplot(alpha=0.5) + 
+  geom_jitter(width=0.25)
+
+ggplot(data.Football, aes(Evaluation)) +
+  geom_histogram(aes(fill = Pied_Fort, color = Pied_Fort), bins = 20, 
+                 position = "identity", alpha = 0.5) +
+  scale_fill_viridis_d() +
+  scale_color_viridis_d()
+
+Gaucher <- filter(data.Football,Pied_Fort == "GAUCHE")
+Droitier <- filter(data.Football,Pied_Fort == "DROIT")
+
+ggplot(data = data.Football, aes(x = Attaque, y = Evaluation)) + 
+  geom_point(alpha = 0.2) + 
+  geom_text(data = Gaucher, aes(label = Nom), color = "#35b779", size = 2)
+
+ggplot(data = data.Football, aes(x = Attaque, y = Evaluation)) + 
+  geom_point(alpha = 0.2) + 
+  geom_text(data = Droitier, aes(label = Nom), color = "#35b779", size = 2)
+```
+
+Grace aux graphes ci dessus, nous remarquons que dans ce jeu de données, nous avons moins de gaucher que de droitier. Sur le premier et le deuxieme graphe nous le voyons clairement.
+Par contre sur le deuxieme graphe, nous constatons que les gauchers ont une moyenne d'évaluation beaucoup plus elevée grace a leur nombre reduit. Ce qui ne signifie pas forcement qu'ils sont meilleurs que les droitier.
+Les troisième et le quatrième graphes nous montrent respectivement la repatition par nom des gauchers et des droitiers.
+
+Dans le domaine du football cette variable est très importante pour determiner le positionnement d'un joueur :
+
+```{r echo=FALSE, warning=FALSE}
+kable(head(filter(GARDIEN[c(1,4,8)],Pied_Fort == "GAUCHE")))
+kable(head(filter(GARDIEN[c(1,4,8)],Pied_Fort == "DROIT")))
+
+ggplot(GARDIEN,aes(x = Pied_Fort, y = Evaluation, fill=Pied_Fort, colour=Pied_Fort)) +
+  geom_boxplot(alpha=0.5) +
+  labs(x = "Pied fort", y = "Evaluation", title = "Gardiens") +
+  geom_jitter(width=0.25)
+
+ggplot(data = GARDIEN, aes(x = Competence_Gardien, y = Evaluation)) + 
+  geom_point(alpha = 0.2) + 
+  labs(x = "Defense", y = "Evaluation", title = "Gardiens") +
+  geom_text(data = filter(GARDIEN,Pied_Fort == "GAUCHE"), aes(label = Nom), color = "#35b779", size = 2)
+ggplot(data = GARDIEN, aes(x = Competence_Gardien, y = Evaluation)) + 
+  geom_point(alpha = 0.2) + 
+  labs(x = "Defense", y = "Evaluation", title = "Gardiens") +
+  geom_text(data = filter(GARDIEN,Pied_Fort == "DROIT"), aes(label = Nom), color = "#35b779", size = 2)
+
+```
+
+Concernant les gardiens nous pouvons constater qu'il y a 5 gauchers et 15 droitiers. Nous n'allons pas parler des differents postes car il y a qu'une seule variante dans la zone du gardien. 
+
+```{r echo=FALSE, warning=FALSE}
+kable(head(filter(DEFENSEUR[c(1,4,8)],Pied_Fort == "GAUCHE")))
+kable(head(filter(DEFENSEUR[c(1,4,8)],Pied_Fort == "DROIT")))
+
+ggplot(DEFENSEUR,aes(x = Pied_Fort, y = Evaluation, fill=Pied_Fort, colour=Pied_Fort)) +
+  geom_boxplot(alpha=0.5) +
+  labs(x = "Pied fort", y = "Evaluation", title = "Defenseurs") +
+  geom_jitter(width=0.25)
+
+ggplot(data = DEFENSEUR, aes(x = Defense, y = Evaluation)) + 
+  geom_point(alpha = 0.2) + 
+  labs(x = "Defense", y = "Evaluation", title = "Defenseurs") +
+  geom_text(data = filter(DEFENSEUR,Pied_Fort == "GAUCHE"), aes(label = Nom), color = "#35b779", size = 2)
+
+```
+
+Concernant les defenseurs nous pouvons constater qu'il y a 8 gauchers et 33 droitiers.
+Nous pouvons constater qu'un defenseur gaucher ne peut se positionner qu'au centre et a gauche, rarement a droite. Et vice versa pour les droitiers.
+
+```{r echo=FALSE, warning=FALSE}
+kable(head(filter(MILIEUX[c(1,4,8)],Pied_Fort == "GAUCHE")))
+kable(head(filter(MILIEUX[c(1,4,8)],Pied_Fort == "DROIT"))) 
+
+ggplot(MILIEUX,aes(x = Pied_Fort, y = Evaluation, fill=Pied_Fort, colour=Pied_Fort)) +
+  geom_boxplot(alpha=0.5) +
+  labs(x = "Pied fort", y = "Evaluation", title = "Gardiens") +
+  geom_jitter(width=0.25)
+
+ggplot(data = MILIEUX, aes(x = Passe, y = Evaluation)) + 
+  geom_point(alpha = 0.2) + 
+  labs(x = "Passe", y = "Evaluation", title = "Milieux") +
+  geom_text(data = filter(MILIEUX,Pied_Fort == "GAUCHE"), aes(label = Nom), color = "#35b779", size = 2)
+```
+
+Concernant les milieux, nous avons 12 gauchers et 39 droitiers.
+Nous pouvons constater que lorsqu'un milieux de terrain est gaucher, il peut se positionner a gauche, au centre ou a droite selon sa capacite a etre efficace et influent sur l'un des deux cotes. Il est est de meme pour les droitier. 
+En d'autre terme le pied fort n'influence pas grandement le positionnement d'un milieux de terrain.
+
+```{r echo=FALSE, warning=FALSE}
+kable(head(filter(ATTAQUANT[c(1,4,8)],Pied_Fort == "GAUCHE")))
+kable(head(filter(ATTAQUANT[c(1,4,8)],Pied_Fort == "DROIT")))
+
+ggplot(ATTAQUANT,aes(x = Pied_Fort, y = Evaluation, fill=Pied_Fort, colour=Pied_Fort)) +
+  geom_boxplot(alpha=0.5) +
+  labs(x = "Pied fort", y = "Evaluation", title = "Gardiens") +
+  geom_jitter(width=0.25)
+
+ggplot(data = ATTAQUANT, aes(x = Defense, y = Evaluation)) + 
+  geom_point(alpha = 0.2) + 
+  labs(x = "Defense", y = "Evaluation", title = "Milieux") +
+  geom_text(data = filter(MILIEUX,Pied_Fort == "GAUCHE"), aes(label = Nom), color = "#35b779", size = 2)
+
+```
+
+Concernant les attaquants, nous avons 7 gauchers et 31 droitiers.
+Nous pouvons constater que le pied fort n'influence pas grandement le positionnement de l'attaquant. Tou comme pour le milieux, sa position dependra de sa preference ou sa capacite a etre efficace et influent sur le terrain.
+
+Sur les graphes qui suivent les differentes matrices de chaque poste, nous faisons la meme remarque a savoir que les gauchers sont moins nombreux que les droitiers et qu'ils ont une moyenne d'evaluation beaucoup plus elevee grace a leur nombre reduit, a l'excepetion des milieux de terrain.
+
+## CONCLUSION
+Pour conclure, la visualisation nous a permi d'avoir une idée assez précise du contenu global de notre jeu de données, et sur quelle base certaines valeurs sont attribuées à certains individus. 
+Les differents outils et packages utilises sont les suivants :
+
+- R stuido
+- tidyverse
+- GGally
+- knitr
+- ggalt

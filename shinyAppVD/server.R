@@ -26,7 +26,8 @@ GARDIEN <- filter(data.Football,Position == "GARDIEN")
 DEFENSEUR <- filter(data.Football,Position == c("DEFENSEUR GAUCHE") | Position == c("DEFENSEUR DROIT") |Position == c("DEFENSEUR CENTRE"))
 MILIEUX <- filter(data.Football,Position == c("MILIEUX OFFENSIF") | Position == c("MILIEUX GAUCHE") |Position == c("MILIEUX DROIT") | Position == c("MILIEUX CENTRAL") | Position == c("MILIEUX DEFENSIF"))
 ATTAQUANT <- filter(data.Football,Position == c("AILIER") | Position == c("ATTAQUANT"))
-
+Gaucher <- filter(data.Football,Pied_Fort == "GAUCHE")
+Droitier <- filter(data.Football,Pied_Fort == "DROIT")
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
@@ -38,7 +39,7 @@ shinyServer(function(input, output) {
     # Secteurs
     
     output$defensif <- renderPlotly({
-        ggplot(data = data.Football, breaks = input$defensif) + 
+        ggplot(data.Football, breaks = input$defensif) + 
             geom_point(aes(x = Defense, y = Interception),color ="#35b779")
     })
     
@@ -140,6 +141,172 @@ shinyServer(function(input, output) {
             geom_point(aes(x = Age, y = Evaluation), 
                        color = "#35b779", size = 2)
     })
+    
+    output$pointsGardians <- renderPlot({
+        ggplot(GARDIEN) + 
+            geom_point(aes(x = Age, y = Evaluation), 
+                       color = "#35b779", size = 2)
+    })
+    
+    output$textGardians <- renderPlot({
+        ggplot(GARDIEN) + 
+            geom_text(aes(x = Age, y = Evaluation, label = Nom), 
+                      color = "#35b779", size = 5)
+    })
+    
+    output$pointsDefenseurs <- renderPlot({
+        ggplot(DEFENSEUR) + 
+            geom_point(aes(x = Age, y = Evaluation), 
+                       color = "#35b779", size = 2)
+    })
+    
+    output$textDefenseurs <- renderPlot({
+        ggplot(DEFENSEUR) + 
+            geom_text(aes(x = Age, y = Evaluation, label = Nom), 
+                      color = "#35b779", size = 5)
+    })
+    
+    output$pointsMilieux <- renderPlot({
+        ggplot(MILIEUX) + 
+            geom_point(aes(x = Age, y = Evaluation), 
+                       color = "#35b779", size = 2)
+    })
+    
+    output$textMilieux <- renderPlot({
+        ggplot(MILIEUX) + 
+            geom_text(aes(x = Age, y = Evaluation, label = Nom), 
+                      color = "#35b779", size = 5)
+    })
+    
+    output$pointsAttaquants <- renderPlot({
+        ggplot(ATTAQUANT) + 
+            geom_point(aes(x = Age, y = Evaluation),
+                       color = "#35b779", size = 2)
+    })
+    
+    output$textAttaquants <- renderPlot({
+        ggplot(ATTAQUANT) + 
+            geom_text(aes(x = Age, y = Evaluation, label = Nom), 
+                      color = "#35b779", size = 5)
+    })
+    
+    
+    # la variable pied fort
+    
+    output$piedMoyenne <- renderPlot({
+        ggplot(data.Football) +
+            geom_boxplot(aes(x = Pied_Fort, y = Evaluation)) + 
+            geom_jitter(aes(x = Pied_Fort, y = Evaluation), col = "#35b779", alpha = 1)
+     
+    })
+    
+    
+    output$attaqueGauche <- renderPlot({
+    
+        ggplot(data = data.Football, aes(x = Attaque, y = Evaluation)) + 
+            geom_point(alpha = 0.2) + 
+            geom_text(data = Gaucher, aes(label = Nom), color = "#35b779", size = 5)
+    })
+    
+    
+    output$attaqueDroit <- renderPlot({
+        ggplot(data = data.Football, aes(x = Attaque, y = Evaluation)) + 
+            geom_point(alpha = 0.2) + 
+            geom_text(data = Droitier, aes(label = Nom), color = "#35b779", size = 5)
+    })
+    
+    
+    output$gardienMoyenne <- renderPlot({
+        filter(GARDIEN[c(1,4,8)],Pied_Fort == "GAUCHE")
+        filter(GARDIEN[c(1,4,8)],Pied_Fort == "DROIT")
+        
+        ggplot(GARDIEN) +
+            geom_boxplot(aes(x = Pied_Fort, y = Evaluation)) + 
+            labs(x = "Pied fort", y = "Evaluation", title = "Gardiens") +
+            geom_jitter(aes(x = Pied_Fort, y = Evaluation), col = "#35b779", alpha = 1) 
+    })
+    
+    output$gardienGauche <- renderPlot({
+        filter(GARDIEN[c(1,4,8)],Pied_Fort == "GAUCHE")
+        filter(GARDIEN[c(1,4,8)],Pied_Fort == "DROIT")
+        
+        ggplot(data = GARDIEN, aes(x = Competence_Gardien, y = Evaluation)) + 
+            geom_point(alpha = 0.2) + 
+            labs(x = "Defense", y = "Evaluation", title = "Gardiens") +
+            geom_text(data = filter(GARDIEN,Pied_Fort == "GAUCHE"), aes(label = Nom), color = "#35b779", size = 5)
+    })
+    
+    output$gardienDroit <- renderPlot({
+        filter(GARDIEN[c(1,4,8)],Pied_Fort == "GAUCHE")
+        filter(GARDIEN[c(1,4,8)],Pied_Fort == "DROIT")
+        
+        ggplot(data = GARDIEN, aes(x = Competence_Gardien, y = Evaluation)) + 
+            geom_point(alpha = 0.2) + 
+            labs(x = "Defense", y = "Evaluation", title = "Gardiens") +
+            geom_text(data = filter(GARDIEN,Pied_Fort == "DROIT"), aes(label = Nom), color = "#35b779", size = 5)
+    })
+    
+    
+    output$defenseurMoyenne <- renderPlot({
+        filter(DEFENSEUR[c(1,4,8)],Pied_Fort == "GAUCHE")
+        filter(DEFENSEUR[c(1,4,8)],Pied_Fort == "DROIT")
+        
+        ggplot(DEFENSEUR) +
+            geom_boxplot(aes(x = Pied_Fort, y = Evaluation)) + 
+            labs(x = "Pied fort", y = "Evaluation", title = "Defenseurs") +
+            geom_jitter(aes(x = Pied_Fort, y = Evaluation), col = "#35b779", alpha = 1) 
+    })
+    
+    output$defenseurpiefort <- renderPlot({
+        filter(DEFENSEUR[c(1,4,8)],Pied_Fort == "GAUCHE")
+        filter(DEFENSEUR[c(1,4,8)],Pied_Fort == "DROIT")
+        
+        ggplot(data = DEFENSEUR, aes(x = Defense, y = Evaluation)) + 
+            geom_point(alpha = 0.2) + 
+            labs(x = "Defense", y = "Evaluation", title = "Defenseurs") +
+            geom_text(data = filter(DEFENSEUR,Pied_Fort == "GAUCHE"), aes(label = Nom), color = "#35b779", size = 2)
+    })
+    
+    output$milieuxMoyenne <- renderPlot({
+        filter(MILIEUX[c(1,4,8)],Pied_Fort == "GAUCHE")
+        filter(MILIEUX[c(1,4,8)],Pied_Fort == "DROIT")
+        
+        ggplot(MILIEUX) +
+            geom_boxplot(aes(x = Pied_Fort, y = Evaluation)) + 
+            labs(x = "Pied fort", y = "Evaluation", title = "Milieux") +
+            geom_jitter(aes(x = Pied_Fort, y = Evaluation), col = "#35b779", alpha = 1) 
+        
+    })
+    
+    output$milieuxMoyenne <- renderPlot({
+        filter(MILIEUX[c(1,4,8)],Pied_Fort == "GAUCHE")
+        filter(MILIEUX[c(1,4,8)],Pied_Fort == "DROIT")
+        
+        geom_boxplot(aes(x = Pied_Fort, y = Evaluation)) + 
+            labs(x = "Pied fort", y = "Evaluation", title = "Milieux") +
+            geom_jitter(aes(x = Pied_Fort, y = Evaluation), col = "#35b779", alpha = 1) 
+    })
+    
+    output$milieuxpiefort <- renderPlot({
+        filter(MILIEUX[c(1,4,8)],Pied_Fort == "GAUCHE")
+        filter(MILIEUX[c(1,4,8)],Pied_Fort == "DROIT")
+        
+        ggplot(MILIEUX) +
+
+        ggplot(data = MILIEUX, aes(x = Passe, y = Evaluation)) + 
+            geom_point(alpha = 0.2) + 
+            labs(x = "Passe", y = "Evaluation", title = "Milieux") +
+            geom_text(data = filter(MILIEUX,Pied_Fort == "GAUCHE"), aes(label = Nom), color = "#35b779", size = 2)
+    })
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     output$msgOutput <- renderMenu({
         msgs <- apply(read.csv("messages.csv"), 1, function(row){

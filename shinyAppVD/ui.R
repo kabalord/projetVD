@@ -62,7 +62,8 @@ shinyUI(
             sidebarMenu(
                 sidebarSearchForm("searchText", "buttonSearch", "Search"),
                 menuItem("Accueil", tabName = "accueil", icon = icon("dashboard")),
-                menuItem("Age", tabName = "age", icon = icon("user-clock"))
+                menuItem("Age", tabName = "age", icon = icon("user-clock")),
+                menuItem("Pied fort", tabName = "Pied", icon = icon("walking"))
             )
         ),
         dashboardBody(
@@ -72,6 +73,9 @@ shinyUI(
                             valueBoxOutput("observations"),
                             valueBoxOutput("variables"),
                             valueBoxOutput("date"),
+                        ),
+                        fluidRow(
+                             
                         ),
                         fluidRow(
                             box(width = 4,
@@ -139,15 +143,126 @@ shinyUI(
                 tabItem(tabName = "age",
                     fluidRow(
                         box(
-                            title = "Pour le gardians", status = "primary", solidHeader = TRUE,
-                            tabBox(
-                                tabPanel(title = "1",
-                                         plotOutput("1")
-                                    
+                            title = "Pour les gardians", status = "primary", solidHeader = TRUE,
+                            tabBox(width = 12,
+                                tabPanel(title = "Points",
+                                         plotOutput("pointsGardians"),
+                                ),
+                                tabPanel(title = "Text",
+                                         plotOutput("textGardians"),
                                 )
                             )
-                        )
+                        ),
+                        box(
+                            title = "Pour les defenseurs", status = "danger", solidHeader = TRUE,
+                            tabBox(width = 12,
+                                   tabPanel(title = "Points",
+                                            plotOutput("pointsDefenseurs"),
+                                   ),
+                                   tabPanel(title = "Text",
+                                            plotOutput("textDefenseurs"),
+                                   )
+                            )
+                        ),
+                        box(
+                            title = "Pour les milieux", status = "warning", solidHeader = TRUE,
+                            tabBox(width = 12,
+                                   tabPanel(title = "Points",
+                                            plotOutput("pointsMilieux"),
+                                   ),
+                                   tabPanel(title = "Text",
+                                            plotOutput("textMilieux"),
+                                   )
+                            )
+                        ),
+                        box(
+                            title = "Pour les attaquants", status = "info", solidHeader = TRUE,
+                            tabBox(width = 12,
+                                   tabPanel(title = "Points",
+                                            plotOutput("pointsAttaquants"),
+                                   ),
+                                   tabPanel(title = "Text",
+                                            plotOutput("textAttaquants"),
+                                   )
+                            )
+                        ),
                     )
+                ),
+                tabItem(tabName = "Pied",
+                    fluidRow(
+                        box(
+                            title = "Moyenne", status = "primary", solidHeader = TRUE,
+                            plotOutput("piedMoyenne"),
+                            sliderInput("controlsMoyenne", "Numero effectifs", 1, 150, 76),
+                        ),
+                        box(
+                            title = "Attaque", status = "danger", solidHeader = TRUE,
+                            tabBox(width = 12,
+                                   tabPanel(title = "Gauche",
+                                            plotOutput("attaqueGauche"),
+                                   ),
+                                   tabPanel(title = "Droit",
+                                            plotOutput("attaqueDroit"),
+                                   )
+                            )
+                            
+                        )
+                    ),
+                    fluidRow(
+                        box(
+                            title = "Gardiens", status = "warning", solidHeader = TRUE,
+                            tabBox(width = 12,
+                                   tabPanel(title = "Moyenne",
+                                            plotOutput("gardienMoyenne"),
+                                   ),
+                                   tabPanel(title = "Gauche",
+                                            plotOutput("gardienGauche"),
+                                   ),
+                                   tabPanel(title = "Droit",
+                                            plotOutput("gardienDroit"),
+                                   )
+                            )
+                        ),
+                        box(
+                            title = "Defenseurs", status = "info", solidHeader = TRUE,
+                            tabBox(width = 12,
+                                   tabPanel(title = "Moyenne",
+                                            plotOutput("defenseurMoyenne"),
+                                   ),
+                                   tabPanel(title = "Defense",
+                                            plotOutput("defenseurpiefort"),
+                                   )
+                            )
+                        ),
+
+                    ),
+                    fluidRow(
+                        box(
+                            title = "Milieux", status = "danger", solidHeader = TRUE,
+                            tabBox(width = 12,
+                                   tabPanel(title = "Moyenne",
+                                            plotOutput("milieuxMoyenne"),
+                                   ),
+                                   tabPanel(title = "Passe",
+                                            plotOutput("milieuxpiefort"),
+                                   )
+                            )
+                            
+                        ),
+                        box(
+                            title = "Attaquant", status = "success", solidHeader = TRUE,
+                            tabBox(width = 12,
+                                   tabPanel(title = "Moyenne",
+                                            plotOutput("attaquantMoyenne"),
+                                   ),
+                                   tabPanel(title = "Attaque",
+                                            plotOutput("attaquantGauche"),
+                                   )
+                            )
+                            
+                        ),
+                    )
+                    
                 )
             )
         ) 
