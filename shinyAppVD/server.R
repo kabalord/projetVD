@@ -9,7 +9,6 @@
 
 library(shiny)
 library(dplyr)
-library(dplyr)
 library(tidyverse)
 library(lattice)
 library(car)
@@ -95,18 +94,6 @@ shinyServer(function(input, output) {
         valueBox("Information", icon = icon("eye"),"Détaillé", color = "light-blue")
     })
     
-    # value boxes graphes
-    output$graphesUno <- renderValueBox({
-        valueBox(2017, icon = icon("chart-bar"),"Date d'analyse", color = "purple")
-    })
-    
-    output$graphesDos <- renderValueBox({
-        valueBox(2017, icon = icon("chart-area"),"Date d'analyse", color = "teal")
-    })
-    output$graphesTres <- renderValueBox({
-        valueBox(2017, icon = icon("chart-line"),"Date d'analyse", color = "light-blue")
-    })
-    
     # Summary    
     output$sum <- renderPrint({
         summary(data.Football)
@@ -128,7 +115,6 @@ shinyServer(function(input, output) {
                 ggplot(aes(Evaluation)) +
                 geom_histogram(fill ="#35b779", colour = "black",binwidth = .5) +
                 geom_rug() +
-                ggtitle("Repartition des joueurs par evaluation") +
                 xlab("Evaluation") +
                 ylab("Effectif") +
                 theme_light() +
