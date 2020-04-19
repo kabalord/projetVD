@@ -124,7 +124,7 @@ shinyServer(function(input, output) {
     # graphs
     
     output$EvalPlot = renderPlot({
-            data.Football%>%filter(Evaluation <= input$Slide)%>%
+            data.Football%>%filter(Evaluation <= input$Slide1)%>%
                 ggplot(aes(Evaluation)) +
                 geom_histogram(fill ="#35b779", colour = "black",binwidth = .5) +
                 geom_rug() +
@@ -137,13 +137,13 @@ shinyServer(function(input, output) {
     
     
     output$myhist = renderPlot({
-        data.Football%>%filter(Evaluation <= input$Slide & Position == input$var)%>% 
+        data.Football%>%filter(Evaluation <= input$Slide2 & Position == input$var1)%>% 
             ggplot(aes(Taille_en_cm, Poids_en_kg)) +
             geom_point(aes(colour = Position))
         })
     
-    output$myhisto = renderPlot({
-            data.Football%>%filter(Position == input$var)%>% 
+    output$myhistopos = renderPlot({
+            data.Football%>%filter(Position == input$var2)%>% 
                 ggplot() + geom_bar(aes(x = Position),fill ="#35b779", colour = "black") + 
                 scale_x_discrete("Position") +
                 labs(x = "Position", y = "Effectif") +
@@ -151,34 +151,42 @@ shinyServer(function(input, output) {
         })
     
     
+    
+    
+    
     output$myhist1 = renderPlot(
         {
-            GARDIEN%>%filter(Taille_en_cm <= input$Slide & Poids_en_kg <= input$Slide2)%>% 
+            GARDIEN%>%filter(Taille_en_cm <= input$SlideTaille & Poids_en_kg <= input$SlidePoids)%>% 
                 ggplot(aes(x=Taille_en_cm, y=Poids_en_kg, colour=Position, shape=Position))+
-                geom_point()
+                geom_point(size = 9)
         }
     )
     output$myhist2 = renderPlot(
         {
-            DEFENSEUR%>%filter(Taille_en_cm <= input$Slide & Poids_en_kg <= input$Slide2)%>% 
+            DEFENSEUR%>%filter(Taille_en_cm <= input$SlideTaille & Poids_en_kg <= input$SlidePoids)%>% 
                 ggplot(aes(x=Taille_en_cm, y=Poids_en_kg, colour=Position, shape=Position))+
-                geom_point()
+                geom_point(size = 9)
         } 
     )
     output$myhist3 = renderPlot(
         {
-            MILIEUX%>%filter(Taille_en_cm <= input$Slide & Poids_en_kg <= input$Slide2)%>% 
+            MILIEUX%>%filter(Taille_en_cm <= input$SlideTaille & Poids_en_kg <= input$SlidePoids)%>% 
                 ggplot(aes(x=Taille_en_cm, y=Poids_en_kg, colour=Position, shape=Position))+
-                geom_point()
+                geom_point(size = 9)
         }
     )
     output$myhist4 = renderPlot(
         {
-            ATTAQUANT%>%filter(Taille_en_cm <= input$Slide & Poids_en_kg <= input$Slide2)%>% 
+            ATTAQUANT%>%filter(Taille_en_cm <= input$SlideTaille & Poids_en_kg <= input$SlidePoids)%>% 
                 ggplot(aes(x=Taille_en_cm, y=Poids_en_kg, colour=Position, shape=Position))+
-                geom_point()
+                geom_point(size = 9)
         } 
     )
+    
+    
+    
+    
+    
 
     # tables
     

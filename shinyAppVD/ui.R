@@ -145,31 +145,43 @@ shinyUI(
                         fluidRow(
                           box(
                               title = tagList(shiny::icon("sort-amount-up"), "un"), status = "info", solidHeader = TRUE, plotOutput("EvalPlot"),
-                              sliderInput('Slide', 'Mex evaluation', min = 80, max = 100, value = 82)
+                              sliderInput('Slide1', 'Mex evaluation', min = 80, max = 100, value = 82)
                           ),
                           box(
                               title = tagList(shiny::icon("sort-amount-up"), "deux"), status = "warning", solidHeader = TRUE, plotOutput("myhist"),
-                              selectInput('var', "Select the Variable", choices = x, selected = 1),
+                              selectInput('var1', "Select the Variable", choices = x, selected = 1),
                               br(),
-                              sliderInput('Slide', 'Mex evaluation', min = 82, max = 100, value = 82),
+                              sliderInput('Slide2', 'Mex evaluation', min = 82, max = 100, value = 82),
                           )
                         ),
                         fluidRow(
                             box(
-                                title = tagList(shiny::icon("sort-amount-up"), "trois"), status = "primary", solidHeader = TRUE, plotOutput("myhisto"),
-                                selectInput('var', "Select the Variable", choices = x, selected = 1),
+                                title = tagList(shiny::icon("sort-amount-up"), "trois"), status = "danger", solidHeader = TRUE, plotOutput("myhistopos"),
+                                selectInput('var2', "Select the Variable", choices = x, selected = 1),
                                 br(),
-                                sliderInput('Slide', 'Mex evaluation', min = 82, max = 100, value = 82)
+                                sliderInput('Slide3', 'Evaluation', min = 82, max = 100, value = 82)
                             ),
                             box(
-                                title = tagList(shiny::icon("sort-amount-up"), "quatre"), status = "danger", solidHeader = TRUE, 
-                                plotOutput("myhist1"),
-                                plotOutput("myhist2"),
-                                plotOutput("myhist3"),
-                                plotOutput("myhist4"),
-                                sliderInput('Slide', 'Taille', min = 160, max = 200, value = 160),
-                                sliderInput('Slide2', 'Poids', min = 50, max = 100, value = 60)
-                            )
+                                title = tagList(shiny::icon("sort-amount-up"), "quatre"), status = "success", solidHeader = TRUE,
+                                tabBox(width = 12,
+                                    tabPanel(title = "Gardien", 
+                                             plotOutput("myhist1")
+                                    ),
+                                    tabPanel(title = "Defenseur", 
+                                             plotOutput("myhist2")
+                                    ),
+                                    tabPanel(title = "Milieux", 
+                                             plotOutput("myhist3")
+                                    ),
+                                    tabPanel(title = "Attaquant", 
+                                             plotOutput("myhist4"),
+                                    ),
+                                    sliderInput('SlideTaille', 'Taille', min = 160, max = 200, value = 160),
+                                    sliderInput('SlidePoids', 'Poids', min = 50, max = 100, value = 60)
+                                ),
+                                
+                            ),
+
                         ),
 
                     
