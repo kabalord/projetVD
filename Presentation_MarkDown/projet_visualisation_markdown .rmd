@@ -184,7 +184,7 @@ ggplot(ATTAQUANT, aes(Taille_en_cm, Poids_en_kg,colour=Position, shape=Position)
 Ces représentations nous demontrent que : 
 
 - La plupart des meilleurs gardiens dans le monde du football son grand de taille et un poids assez elevé. Ce qui nous laisse penser qu'un gardien aillant ces critères a de forte chance de faire partir des meilleurs.
-- Très peu de bons défenseur centraux ont une taille inférieure à 185cm et un poids inférieur à 75kg.Par conséquent la taille et le poids sont des atouts déterminants à ce poste. Contrairement au poste de défenseur droit et gauche, où le joueur a besoin de vitesse et d'agilité. DU coup la taille et le poids ne sont pas indispensables.
+- Très peu de bons défenseur centraux ont une taille inférieure à 185cm et un poids inférieur à 75kg. Par conséquent la taille et le poids sont des atouts déterminants à ce poste. Contrairement au poste de défenseur droit et gauche, où le joueur a besoin de vitesse et d'agilité. Du coup la taille et le poids ne sont pas indispensables.
 - Concernant les milieux de terrain, les critères ci dessus ne sont pas indispensables pour faire partir des meilleurs. Un joueur peux avoir une petite taille et etre performant à son poste et inversement.
 - Pour le secteur offensif, la majorité des ailiers font moins 180cm et moins de 80kg contrairement aux attaquants dont la majorité ont une taille supérieur à 180cm et un poids supérieur 75kg. Par conséquent un ailier ou un attaquant qui possède ces caractéristiques pourrait faire partir des meilleurs.  
 

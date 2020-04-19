@@ -23,7 +23,7 @@ x <- levels(data.Football$Position)
 # Define UI for application that draws a histogram
 shinyUI(
     dashboardPage(skin = "green",
-        dashboardHeader(title = "Football Charts", dropdownMenuOutput("msgOutput"),
+        dashboardHeader(title = "Projet INFO0808", dropdownMenuOutput("msgOutput"),
                         dropdownMenu(type = "notifications",
                                      notificationItem(
                                          text = "Vous avez ajouté 2 nouveaux tabs",
@@ -57,7 +57,7 @@ shinyUI(
         dashboardSidebar(
             sidebarMenu(
                 menuItem("Accueil", tabName = "accueil", icon = icon("dashboard")),
-                menuItem("Les Plots", tabName = "plots", icon = icon("chart-line")),
+                menuItem("Aperçu", tabName = "plots", icon = icon("chart-line")),
                 menuItem("Les tables", tabName = "tables", icon = icon("table")),
                 menuItem("Les graphes", tabName = "graphes", icon = icon("chart-bar"))
             )
@@ -73,7 +73,7 @@ shinyUI(
 
                         fluidRow(
                             box(width = 12,
-                                title = tagList(shiny::icon("list"), "Summary dataset"), status = "danger", solidHeader = TRUE, verbatimTextOutput("sum"),  
+                                title = tagList(shiny::icon("list"), "Résumé dataset"), status = "danger", solidHeader = TRUE, verbatimTextOutput("sum"),  
                             ),
 
                             
@@ -83,7 +83,7 @@ shinyUI(
                                 title = tagList(shiny::icon("chart-line"), "Correlation des variables"), status = "primary", solidHeader = TRUE, plotOutput("correlation"), 
                             ),
                             box(width = 8,
-                                title = tagList(shiny::icon("user-tag"), "Repartition des jouers par poste"), status = "warning", solidHeader = TRUE, plotOutput("repartition"),
+                                title = tagList(shiny::icon("user-tag"), "Répartition des joueurs par poste"), status = "warning", solidHeader = TRUE, plotOutput("repartition"),
                             )
                         )
  
