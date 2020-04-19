@@ -150,8 +150,23 @@ shinyServer(function(input, output) {
                 geom_point()
         })
 
+    # tables
     
+    output$gardiens<- DT::renderDataTable({
+        (GARDIEN[,1:5])
+    })
     
+    output$defenseurs <- DT::renderDataTable({
+        (DEFENSEUR[,1:5])
+    })
+    
+    output$milieux <- DT::renderDataTable({
+        (MILIEUX[,1:5])
+    })
+    
+    output$attaquants <- DT::renderDataTable({
+        (ATTAQUANT[,1:5])
+    })
     
     output$msgOutput <- renderMenu({
         msgs <- apply(read.csv("messages.csv"), 1, function(row){

@@ -98,7 +98,35 @@ shinyUI(
  
                 ),
                 tabItem(tabName = "tables",
- 
+
+                        fluidRow(
+                            box(
+                                title = tagList(shiny::icon("futbol"), "Milieux"),
+                                status = "primary",
+                                solidHeader = TRUE,
+                                DT::dataTableOutput("milieux"),
+                            ),
+                            box(
+                                title = tagList(shiny::icon("futbol"), "Defenseurs"),
+                                status = "primary",
+                                solidHeader = TRUE,
+                                DT::dataTableOutput("defenseurs"),
+                            ),
+                        ),
+                        fluidRow(
+                            box(
+                                title = tagList(shiny::icon("futbol"), "Gardiens"),
+                                status = "primary",
+                                solidHeader = TRUE,
+                                DT::dataTableOutput("gardiens"),
+                            ),
+                            box(
+                                title = tagList(shiny::icon("futbol"), "Attaquants"),
+                                status = "primary",
+                                solidHeader = TRUE,
+                                DT::dataTableOutput("attaquants"),
+                            ),
+                        ),
                 ),
                 tabItem(tabName = "graphes",
                         fluidRow(
