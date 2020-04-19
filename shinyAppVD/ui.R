@@ -105,10 +105,10 @@ shinyUI(
 
                         fluidRow(
                             box(
-                                title = tagList(shiny::icon("arrows-alt"), "Milieux"),
+                                title = tagList(shiny::icon("arrows-alt"), "Gardiens"),
                                 status = "warning",
                                 solidHeader = TRUE,
-                                DT::dataTableOutput("milieux"),
+                                DT::dataTableOutput("gardiens"),
                             ),
                             box(
                                 title = tagList(shiny::icon("sort-amount-down"), "Defenseurs"),
@@ -119,10 +119,10 @@ shinyUI(
                         ),
                         fluidRow(
                             box(
-                                title = tagList(shiny::icon("futbol"), "Gardiens"),
+                                title = tagList(shiny::icon("futbol"), "Milieux"),
                                 status = "primary",
                                 solidHeader = TRUE,
-                                DT::dataTableOutput("gardiens"),
+                                DT::dataTableOutput("milieux"),
                             ),
                             box(
                                 title = tagList(shiny::icon("sort-amount-up"), "Attaquants"),
