@@ -131,6 +131,9 @@ shinyUI(
                                 DT::dataTableOutput("attaquants"),
                             ),
                         ),
+                        fluidRow(
+                            downloadButton("data_football", "Download data_football.csv"),
+                        )
                 ),
                 tabItem(tabName = "graphes",
                         fluidRow(
@@ -167,7 +170,8 @@ shinyUI(
                                 sliderInput('Slide', 'Taille', min = 160, max = 200, value = 160),
                                 sliderInput('Slide2', 'Poids', min = 50, max = 100, value = 60)
                             )
-                        )
+                        ),
+
                     
                 )
             )

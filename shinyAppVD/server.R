@@ -192,6 +192,16 @@ shinyServer(function(input, output) {
         (ATTAQUANT[,1:5])
     })
     
+    # download CSV
+    output$data_football <- downloadHandler(
+        filename <- "data_football.csv",
+        content <- function(file) {
+            write.csv(data.Football, file)
+        },
+        contentType = "text/csv"
+    )
+    
+    
     output$msgOutput <- renderMenu({
         msgs <- apply(read.csv("messages.csv"), 1, function(row){
             messageItem(from = row[["from"]], message = row[["message"]])
