@@ -20,7 +20,7 @@ colnames(data.Football)
 #  "Tacle_Debout","Agressivite","Reaction","Attaque","Interception",
 #  "Vision_du_Jeu","Calme","Centre","Passe_Courte","Passe_Longue","Acceleration",
 #  "Vitesse","Endurance","Force","Equilibre","Agilite","Jump","Tete","Puissance_de_Frappe",
-#  "Finition","Frappe_de_Loin","Curve","Précision_du_Coup_Franc","Penalty","Volley","Positionnement_GK",
+#  "Finition","Frappe_de_Loin","Curve","Pr?cision_du_Coup_Franc","Penalty","Volley","Positionnement_GK",
 #  "Plongee_GK","Coup_de_pied_GK","Jeu_de_Main_GK","Reflexes_GK")
 
 #filter(data.Football[,1:4],Position == "GARDIEN")
@@ -56,3 +56,4 @@ Mat2 <- creation.equipe(GARDIEN_Equipe,DEFENSEUR_Equipe,
                 MILIEUX_Equipe,ATTAQUANT_Equipe)
 
 Mat2 <- merge(Mat2,Mat,by.x="Nom",by.y="Nom")
+

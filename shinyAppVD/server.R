@@ -18,7 +18,9 @@ library(plotly)
 library(ggcorrplot)
 
 # Chargement dataset
-data.Football <- fread(file="data_football.csv")
+install.packages("data.table")
+library("data.table")
+data.Football <- fread(file="/Users/walterroaserrano/Desktop/M12020/UniversiteChampagneArdenne/visualisationDonnees/projetVD/shinyAppVD/data_football.csv")
 
 # Definition des variables
 GARDIEN <- filter(data.Football,Position == "GARDIEN")
