@@ -8,6 +8,7 @@
 #
 
 library(shiny)
+library(shinydashboard)
 library(dplyr)
 library(tidyverse)
 library(lattice)
@@ -16,7 +17,9 @@ library(viridis)
 library(GGally)
 library(plotly)
 library(ggcorrplot)
-library("data.table")
+library(data.table)
+library(ggplot2)
+library(ggalt)
 
 # Chargement dataset
 data.Football <- fread(file="data_football.csv")

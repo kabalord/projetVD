@@ -17,6 +17,9 @@ library(viridis)
 library(GGally)
 library(plotly)
 library(ggcorrplot)
+library(data.table)
+library(ggplot2)
+library(ggalt)
 x <- levels(data.Football$Position)
 
 
